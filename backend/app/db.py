@@ -100,6 +100,38 @@ def init_db() -> None:
               reason TEXT,
               created_at TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS speaking_prompts (
+              id TEXT PRIMARY KEY,
+              type TEXT NOT NULL,
+              knowledge_point_id TEXT NOT NULL,
+              prompt_text TEXT NOT NULL,
+              expected_text TEXT NOT NULL,
+              tts_text TEXT,
+              hint_zh TEXT,
+              sort_order INTEGER NOT NULL DEFAULT 0,
+              FOREIGN KEY (knowledge_point_id) REFERENCES knowledge_points(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS speaking_sessions (
+              id TEXT PRIMARY KEY,
+              started_at TEXT NOT NULL,
+              ended_at TEXT,
+              duration_seconds INTEGER NOT NULL DEFAULT 0
+            );
+
+            CREATE TABLE IF NOT EXISTS speaking_attempts (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              session_id TEXT NOT NULL,
+              prompt_id TEXT NOT NULL,
+              transcript TEXT,
+              stars INTEGER NOT NULL,
+              feedback TEXT NOT NULL,
+              stt_source TEXT,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY (session_id) REFERENCES speaking_sessions(id),
+              FOREIGN KEY (prompt_id) REFERENCES speaking_prompts(id)
+            );
             """
         )
     seed_content()
@@ -109,11 +141,15 @@ def seed_content() -> None:
     settings = get_settings()
     kp_file = settings.content_path / "knowledge_points.json"
     q_file = settings.content_path / "seed_questions.json"
+    speaking_file = settings.content_path / "speaking_scripts.json"
     if not kp_file.exists() or not q_file.exists():
         raise FileNotFoundError(f"Missing content under {settings.content_path}")
 
     kp_data = json.loads(kp_file.read_text(encoding="utf-8"))
     questions = json.loads(q_file.read_text(encoding="utf-8"))
+    speaking_scripts = (
+        json.loads(speaking_file.read_text(encoding="utf-8")) if speaking_file.exists() else []
+    )
 
     with get_db() as conn:
         for subject in kp_data["subjects"]:
@@ -175,6 +211,33 @@ def seed_content() -> None:
                     q.get("tts_text"),
                     int(q.get("difficulty", 1)),
                     1 if q.get("seed", True) else 0,
+                ),
+            )
+
+        for sp in speaking_scripts:
+            conn.execute(
+                """
+                INSERT INTO speaking_prompts (
+                  id, type, knowledge_point_id, prompt_text, expected_text, tts_text, hint_zh, sort_order
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id) DO UPDATE SET
+                  type=excluded.type,
+                  knowledge_point_id=excluded.knowledge_point_id,
+                  prompt_text=excluded.prompt_text,
+                  expected_text=excluded.expected_text,
+                  tts_text=excluded.tts_text,
+                  hint_zh=excluded.hint_zh,
+                  sort_order=excluded.sort_order
+                """,
+                (
+                    sp["id"],
+                    sp["type"],
+                    sp["knowledge_point_id"],
+                    sp["prompt_text"],
+                    sp["expected_text"],
+                    sp.get("tts_text"),
+                    sp.get("hint_zh"),
+                    int(sp.get("sort_order", 0)),
                 ),
             )
 

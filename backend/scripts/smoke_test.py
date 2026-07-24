@@ -101,6 +101,64 @@ def main() -> None:
         )
         assert r.status_code == 200
 
+        # Speaking module
+        r = client.post(
+            "/api/v1/speaking/start",
+            json={"family_code": "phoebe-home", "count": 4},
+        )
+        assert r.status_code == 200, r.text
+        speaking = r.json()
+        assert speaking["session_id"].startswith("spk_")
+        assert len(speaking["prompts"]) >= 2
+        echo = next(p for p in speaking["prompts"] if p["type"] == "echo")
+        qa = next((p for p in speaking["prompts"] if p["type"] == "qa"), None)
+
+        r = client.post(
+            "/api/v1/speaking/submit-audio",
+            data={
+                "session_id": speaking["session_id"],
+                "prompt_id": echo["id"],
+                "family_code": "phoebe-home",
+                "mock_transcript": echo["expected_text"],
+            },
+            files={"file": ("tiny.wav", b"RIFF....", "audio/wav")},
+        )
+        assert r.status_code == 200, r.text
+        sp_body = r.json()
+        assert sp_body["stars"] >= 4
+        assert sp_body["feedback"]
+        assert sp_body["stt_source"] == "mock"
+
+        if qa:
+            r = client.post(
+                "/api/v1/speaking/submit-audio",
+                data={
+                    "session_id": speaking["session_id"],
+                    "prompt_id": qa["id"],
+                    "family_code": "phoebe-home",
+                    "mock_transcript": "um " + qa["expected_text"],
+                },
+                files={"file": ("tiny.wav", b"RIFF....", "audio/wav")},
+            )
+            assert r.status_code == 200, r.text
+            assert r.json()["stars"] >= 3
+
+        r = client.post(
+            "/api/v1/speaking/end",
+            json={
+                "session_id": speaking["session_id"],
+                "duration_seconds": 180,
+                "family_code": "phoebe-home",
+            },
+        )
+        assert r.status_code == 200
+
+        r = client.get("/api/v1/parent/summary", params={"family_code": "phoebe-home"})
+        assert r.status_code == 200
+        summary = r.json()
+        assert summary["speaking_attempts"] >= 1
+        assert summary["speaking_seconds"] >= 180
+
     print("ALL SMOKE TESTS PASSED")
 
 

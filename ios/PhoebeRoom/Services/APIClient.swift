@@ -111,6 +111,70 @@ final class APIClient {
         )
     }
 
+    func startSpeaking(count: Int, familyCode: String) async throws -> StartSpeakingResponse {
+        try await post(
+            "speaking/start",
+            json: ["count": count, "family_code": familyCode],
+            as: StartSpeakingResponse.self
+        )
+    }
+
+    func submitSpeakingAudio(
+        sessionId: String,
+        promptId: String,
+        familyCode: String,
+        audioData: Data,
+        filename: String = "take.m4a",
+        mockTranscript: String? = nil
+    ) async throws -> SpeakingSubmitResponse {
+        let url = baseURL.appendingPathComponent("speaking/submit-audio")
+        let boundary = "Boundary-\(UUID().uuidString)"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+        func appendField(_ name: String, _ value: String) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(name)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        appendField("session_id", sessionId)
+        appendField("prompt_id", promptId)
+        appendField("family_code", familyCode)
+        if let mockTranscript {
+            appendField("mock_transcript", mockTranscript)
+        }
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: audio/m4a\r\n\r\n".data(using: .utf8)!)
+        body.append(audioData)
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try validate(response)
+        do {
+            return try decoder.decode(SpeakingSubmitResponse.self, from: data)
+        } catch {
+            throw APIError.decoding
+        }
+    }
+
+    func endSpeaking(sessionId: String, durationSeconds: Int, familyCode: String) async throws {
+        struct OK: Codable { let ok: Bool }
+        _ = try await post(
+            "speaking/end",
+            json: [
+                "session_id": sessionId,
+                "duration_seconds": durationSeconds,
+                "family_code": familyCode,
+            ],
+            as: OK.self
+        )
+    }
+
     private func post<T: Decodable>(_ path: String, json: [String: Any], as type: T.Type) async throws -> T {
         let url = baseURL.appendingPathComponent(path)
         var request = URLRequest(url: url)

@@ -29,7 +29,7 @@ struct HomeView: View {
                         Text("Phoebe's Room")
                             .font(.system(size: 44, weight: .bold, design: .rounded))
                             .foregroundStyle(RoomTheme.ink)
-                        Text("爸爸和朋友陪你练一练。做题为主，讲得清清楚楚。")
+                        Text("爸爸和朋友陪你练一练。做题，也能开口说英语。")
                             .font(.title3)
                             .foregroundStyle(.secondary)
                     }
@@ -43,6 +43,27 @@ struct HomeView: View {
                             .buttonStyle(.plain)
                         }
                     }
+
+                    NavigationLink {
+                        SpeakingSessionView()
+                    } label: {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("口语陪练")
+                                .font(.system(size: 32, weight: .semibold, design: .rounded))
+                            Text("跟读 · 少量问答 · 鼓励与星级")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                        .foregroundStyle(RoomTheme.ink)
+                        .padding(24)
+                        .frame(maxWidth: .infinity, minHeight: 120, alignment: .leading)
+                        .background(
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .fill(RoomTheme.peach.opacity(0.22))
+                                .shadow(color: .black.opacity(0.06), radius: 12, y: 6)
+                        )
+                    }
+                    .buttonStyle(.plain)
 
                     NavigationLink {
                         KnowledgeListView(subject: nil)

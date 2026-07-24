@@ -30,12 +30,16 @@ python3 scripts/smoke_test.py
 | POST | `/api/v1/practice/start` | 开始练习（review/weak/habit） |
 | POST | `/api/v1/practice/submit` | 提交作答 |
 | POST | `/api/v1/practice/end` | 结束会话 |
+| POST | `/api/v1/speaking/start` | 开始口语陪练 |
+| POST | `/api/v1/speaking/submit-audio` | 上传录音评测（multipart；可 `mock_transcript`） |
+| POST | `/api/v1/speaking/end` | 结束口语会话 |
 | GET | `/api/v1/parent/gate` | 家长门禁题目 |
 | POST | `/api/v1/parent/gate/verify` | 验证门禁 |
-| GET | `/api/v1/parent/summary` | 家长摘要 |
+| GET | `/api/v1/parent/summary` | 家长摘要（含口语统计） |
 | POST | `/api/v1/questions/generate-similar` | 相似题生成 |
 
-默认家庭码：`phoebe-home`（`.env` 中 `FAMILY_CODE`）。
+默认家庭码：`phoebe-home`（`.env` 中 `FAMILY_CODE`）。  
+口语 STT：配置 `LLM_API_KEY` 后走 Whisper；`STT_MOCK=true` 时可用 `mock_transcript` 联调。
 
 ## 内容
 

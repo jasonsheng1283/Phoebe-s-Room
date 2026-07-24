@@ -38,5 +38,7 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>用于英语口语陪练：跟读与回答时录音，以便爸爸朋友给你鼓励和星级反馈。</string>
 </dict>
 </plist>

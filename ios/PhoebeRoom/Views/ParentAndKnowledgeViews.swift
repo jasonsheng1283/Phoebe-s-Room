@@ -110,6 +110,11 @@ struct ParentSummaryView: View {
                     LabeledContent("正确率", value: String(format: "%.0f%%", summary.accuracy * 100))
                     LabeledContent("练习时长", value: "\(summary.totalPracticeSeconds / 60) 分")
                 }
+                Section("口语陪练") {
+                    LabeledContent("口语次数", value: "\(summary.speakingAttempts)")
+                    LabeledContent("平均星级", value: String(format: "%.1f", summary.speakingAvgStars))
+                    LabeledContent("口语时长", value: "\(summary.speakingSeconds / 60) 分")
+                }
                 Section("需要关注的知识点") {
                     if summary.weakPoints.isEmpty {
                         Text("还没有足够练习数据")

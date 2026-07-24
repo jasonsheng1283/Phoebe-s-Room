@@ -74,6 +74,9 @@ struct ParentSummary: Codable {
     let accuracy: Double
     let totalPracticeSeconds: Int
     let weakPoints: [KnowledgePoint]
+    let speakingAttempts: Int
+    let speakingAvgStars: Double
+    let speakingSeconds: Int
 
     enum CodingKeys: String, CodingKey {
         case accuracy
@@ -81,6 +84,9 @@ struct ParentSummary: Codable {
         case correctAttempts = "correct_attempts"
         case totalPracticeSeconds = "total_practice_seconds"
         case weakPoints = "weak_points"
+        case speakingAttempts = "speaking_attempts"
+        case speakingAvgStars = "speaking_avg_stars"
+        case speakingSeconds = "speaking_seconds"
     }
 }
 
@@ -93,4 +99,56 @@ struct ParentGateChallenge: Codable {
 struct GenerateSimilarResponse: Codable {
     let accepted: Bool
     let reason: String
+}
+
+struct SpeakingPrompt: Identifiable, Codable, Hashable {
+    let id: String
+    let type: String
+    let knowledgePointId: String
+    let promptText: String
+    let ttsText: String
+    let hintZh: String?
+    let expectedText: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, type
+        case knowledgePointId = "knowledge_point_id"
+        case promptText = "prompt_text"
+        case ttsText = "tts_text"
+        case hintZh = "hint_zh"
+        case expectedText = "expected_text"
+    }
+
+    var isEcho: Bool { type == "echo" }
+}
+
+struct StartSpeakingResponse: Codable {
+    let sessionId: String
+    let prompts: [SpeakingPrompt]
+
+    enum CodingKeys: String, CodingKey {
+        case prompts
+        case sessionId = "session_id"
+    }
+}
+
+struct SpeakingSubmitResponse: Codable {
+    let transcript: String
+    let stars: Int
+    let masteryStars: Int
+    let feedback: String
+    let expectedText: String
+    let ttsText: String
+    let knowledgePointId: String
+    let sttSource: String
+    let similarity: Double
+
+    enum CodingKeys: String, CodingKey {
+        case transcript, stars, feedback, similarity
+        case masteryStars = "mastery_stars"
+        case expectedText = "expected_text"
+        case ttsText = "tts_text"
+        case knowledgePointId = "knowledge_point_id"
+        case sttSource = "stt_source"
+    }
 }

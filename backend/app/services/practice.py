@@ -164,6 +164,12 @@ def parent_summary(conn: sqlite3.Connection) -> dict[str, Any]:
         LIMIT 10
         """
     ).fetchall()
+    speaking = conn.execute(
+        "SELECT COUNT(*) AS c, COALESCE(AVG(stars), 0) AS avg_stars FROM speaking_attempts"
+    ).fetchone()
+    speaking_duration = conn.execute(
+        "SELECT COALESCE(SUM(duration_seconds), 0) AS seconds FROM speaking_sessions"
+    ).fetchone()
     return {
         "total_attempts": total,
         "correct_attempts": correct,
@@ -171,4 +177,7 @@ def parent_summary(conn: sqlite3.Connection) -> dict[str, Any]:
         "total_practice_seconds": int(duration["seconds"]),
         "weak_points": weak_points,
         "recent_sessions": [dict(s) for s in sessions],
+        "speaking_attempts": int(speaking["c"]),
+        "speaking_avg_stars": round(float(speaking["avg_stars"]), 2),
+        "speaking_seconds": int(speaking_duration["seconds"]),
     }

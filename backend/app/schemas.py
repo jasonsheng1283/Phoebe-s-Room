@@ -96,6 +96,9 @@ class ParentSummary(BaseModel):
     total_practice_seconds: int
     weak_points: list[KnowledgePoint]
     recent_sessions: list[dict[str, Any]]
+    speaking_attempts: int = 0
+    speaking_avg_stars: float = 0.0
+    speaking_seconds: int = 0
 
 
 class GenerateSimilarRequest(BaseModel):
@@ -108,3 +111,41 @@ class GenerateSimilarResponse(BaseModel):
     accepted: bool
     reason: str
     question: QuestionWithAnswer | None = None
+
+
+class SpeakingPrompt(BaseModel):
+    id: str
+    type: str
+    knowledge_point_id: str
+    prompt_text: str
+    tts_text: str
+    hint_zh: str | None = None
+    expected_text: str
+
+
+class StartSpeakingRequest(BaseModel):
+    family_code: str = "phoebe-home"
+    count: int = Field(default=6, ge=1, le=12)
+
+
+class StartSpeakingResponse(BaseModel):
+    session_id: str
+    prompts: list[SpeakingPrompt]
+
+
+class SpeakingSubmitResponse(BaseModel):
+    transcript: str
+    stars: int
+    mastery_stars: int
+    feedback: str
+    expected_text: str
+    tts_text: str
+    knowledge_point_id: str
+    stt_source: str
+    similarity: float
+
+
+class EndSpeakingRequest(BaseModel):
+    session_id: str
+    duration_seconds: int = Field(default=0, ge=0)
+    family_code: str = "phoebe-home"

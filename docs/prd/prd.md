@@ -12,9 +12,11 @@
 
 | 字段 | 值 |
 |------|-----|
+| 状态 | Draft — 主干已实现，待验收确认 |
 | 最近更新 | 2026-07-24 |
 | 口语讨论 | `docs/discussions/20260724_speaking_module.md` |
 | 口语计划 | `docs/plan/20260724_plan_speaking.md` |
+| 口语验收 | `docs/reviews/20260724_speaking_acceptance.md` |
 
 ## 历史版本
 

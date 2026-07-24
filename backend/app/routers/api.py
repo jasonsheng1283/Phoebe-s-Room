@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import uuid
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 
 from ..config import get_settings
 from ..db import get_db, utc_now
 from ..schemas import (
     EndSessionRequest,
+    EndSpeakingRequest,
     GenerateSimilarRequest,
     GenerateSimilarResponse,
     HealthResponse,
@@ -15,14 +16,19 @@ from ..schemas import (
     ParentGateChallenge,
     ParentGateRequest,
     ParentSummary,
+    SpeakingPrompt,
+    SpeakingSubmitResponse,
     StartPracticeRequest,
     StartPracticeResponse,
+    StartSpeakingRequest,
+    StartSpeakingResponse,
     SubmitAnswerRequest,
     SubmitAnswerResponse,
 )
 from ..services.grading import grade_answer
 from ..services.practice import list_knowledge_points, parent_summary, pick_questions, question_to_public, update_mastery
 from ..services.similar import generate_similar
+from ..services.speaking import evaluate_attempt, list_prompts, prompt_public
 
 router = APIRouter()
 
@@ -157,3 +163,67 @@ def get_question(question_id: str, reveal: bool = False) -> dict:
         if row is None:
             raise HTTPException(status_code=404, detail="question_not_found")
         return question_to_public(row, include_answer=reveal)
+
+
+@router.post("/speaking/start", response_model=StartSpeakingResponse)
+def start_speaking(body: StartSpeakingRequest) -> StartSpeakingResponse:
+    _assert_family(body.family_code)
+    session_id = f"spk_{uuid.uuid4().hex[:12]}"
+    with get_db() as conn:
+        prompts = list_prompts(conn, limit=body.count)
+        if not prompts:
+            raise HTTPException(status_code=404, detail="no_speaking_prompts")
+        conn.execute(
+            """
+            INSERT INTO speaking_sessions (id, started_at, duration_seconds)
+            VALUES (?, ?, 0)
+            """,
+            (session_id, utc_now()),
+        )
+    return StartSpeakingResponse(
+        session_id=session_id,
+        prompts=[SpeakingPrompt(**prompt_public(p)) for p in prompts],
+    )
+
+
+@router.post("/speaking/submit-audio", response_model=SpeakingSubmitResponse)
+async def speaking_submit_audio(
+    session_id: str = Form(...),
+    prompt_id: str = Form(...),
+    family_code: str = Form("phoebe-home"),
+    mock_transcript: str | None = Form(default=None),
+    file: UploadFile | None = File(default=None),
+) -> SpeakingSubmitResponse:
+    _assert_family(family_code)
+    audio_bytes = await file.read() if file is not None else b""
+    filename = file.filename if file and file.filename else "audio.m4a"
+    with get_db() as conn:
+        try:
+            result = await evaluate_attempt(
+                conn,
+                session_id=session_id,
+                prompt_id=prompt_id,
+                audio_bytes=audio_bytes,
+                filename=filename,
+                mock_transcript=mock_transcript,
+            )
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return SpeakingSubmitResponse(**result)
+
+
+@router.post("/speaking/end")
+def end_speaking(body: EndSpeakingRequest) -> dict:
+    _assert_family(body.family_code)
+    with get_db() as conn:
+        cur = conn.execute(
+            """
+            UPDATE speaking_sessions
+            SET ended_at = ?, duration_seconds = ?
+            WHERE id = ?
+            """,
+            (utc_now(), body.duration_seconds, body.session_id),
+        )
+        if cur.rowcount == 0:
+            raise HTTPException(status_code=404, detail="session_not_found")
+    return {"ok": True}

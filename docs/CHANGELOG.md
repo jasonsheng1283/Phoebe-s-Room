@@ -6,11 +6,9 @@
 
 ### Added
 
-- 英语口语陪练：需求确认、增量 PRD 与实现计划（待开发许可）
-  - `docs/discussions/20260724_speaking_module.md`
-  - `docs/prd/speaking_20260724.md`
-  - `docs/plan/20260724_plan_speaking.md`
-  - 功能点 F-030～F-036
+- 英语口语陪练：剧本、API（start/submit-audio/end）、STT/星级点评、SwiftUI 独立入口与录音回放
+- 家长摘要口语统计字段
+- 验收报告 `docs/reviews/20260724_speaking_acceptance.md`
 
 ## [0.1.0] - 2026-07-24
 

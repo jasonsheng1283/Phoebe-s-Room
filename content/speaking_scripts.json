@@ -1,0 +1,82 @@
+[
+  {
+    "id": "sp_echo_cat",
+    "type": "echo",
+    "knowledge_point_id": "en.phonics_short_a",
+    "prompt_text": "跟我读：cat",
+    "expected_text": "cat",
+    "tts_text": "cat",
+    "hint_zh": "短元音 a，像扁一点的「啊」。",
+    "sort_order": 1
+  },
+  {
+    "id": "sp_echo_map",
+    "type": "echo",
+    "knowledge_point_id": "en.phonics_short_a",
+    "prompt_text": "跟我读：map",
+    "expected_text": "map",
+    "tts_text": "map",
+    "hint_zh": "和 cat 一样的短 a。",
+    "sort_order": 2
+  },
+  {
+    "id": "sp_echo_bed",
+    "type": "echo",
+    "knowledge_point_id": "en.phonics_short_e",
+    "prompt_text": "跟我读：bed",
+    "expected_text": "bed",
+    "tts_text": "bed",
+    "hint_zh": "短元音 e。",
+    "sort_order": 3
+  },
+  {
+    "id": "sp_echo_red",
+    "type": "echo",
+    "knowledge_point_id": "en.listening_colors",
+    "prompt_text": "跟我读：red",
+    "expected_text": "red",
+    "tts_text": "red",
+    "hint_zh": "颜色：红色。",
+    "sort_order": 4
+  },
+  {
+    "id": "sp_echo_dog",
+    "type": "echo",
+    "knowledge_point_id": "en.listening_animals",
+    "prompt_text": "跟我读：dog",
+    "expected_text": "dog",
+    "tts_text": "dog",
+    "hint_zh": "动物：狗。",
+    "sort_order": 5
+  },
+  {
+    "id": "sp_qa_color",
+    "type": "qa",
+    "knowledge_point_id": "en.listening_colors",
+    "prompt_text": "What color is an apple? 苹果通常是什么颜色？（可以说 red）",
+    "expected_text": "red",
+    "tts_text": "What color is an apple?",
+    "hint_zh": "可以用一个词：red。",
+    "sort_order": 6
+  },
+  {
+    "id": "sp_qa_animal",
+    "type": "qa",
+    "knowledge_point_id": "en.listening_animals",
+    "prompt_text": "What animal says woof? 谁会汪汪叫？（可以说 dog）",
+    "expected_text": "dog",
+    "tts_text": "What animal says woof?",
+    "hint_zh": "答案是 dog。",
+    "sort_order": 7
+  },
+  {
+    "id": "sp_echo_the",
+    "type": "echo",
+    "knowledge_point_id": "en.sight_words_set1",
+    "prompt_text": "跟我读：the",
+    "expected_text": "the",
+    "tts_text": "the",
+    "hint_zh": "常见词 the。",
+    "sort_order": 8
+  }
+]
