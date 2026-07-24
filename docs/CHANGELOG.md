@@ -6,18 +6,14 @@
 
 ### Added
 
-- 细节确认讨论：`docs/discussions/20260724_detail_confirmed.md`
-- 功能点 F-025～F-029（题型、手写、SwiftUI 工程）
+- FastAPI 后端：练习/批改/星级/家长/相似题（`backend/`）
+- 内容种子：二年级数学与英语知识点与题目（`content/`）
+- SwiftUI iPad 客户端源码（`ios/PhoebeRoom/`）与 XcodeGen 配置
+- 隐私政策草案与验收报告（`docs/legal/`、`docs/reviews/`）
 
 ### Changed
 
-- 计划与 PRD 改为 **SwiftUI**；确认题型、点选+输入/手写、星级、家长页、先 TestFlight
-- 更新 BACKGROUND / GLOSSARY / features / rule.mdc
-
-### Added（此前）
-
-- MVP 范围确认讨论与实现计划初稿
-- 文档体系与协作规范首版
+- MVP 计划状态改为 In Progress；功能列表同步实现状态
 
 ## [0.0.1] - 2026-07-24
 

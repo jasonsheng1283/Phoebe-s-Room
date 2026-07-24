@@ -1,0 +1,135 @@
+import Foundation
+
+enum APIError: LocalizedError {
+    case badURL
+    case server(String)
+    case decoding
+
+    var errorDescription: String? {
+        switch self {
+        case .badURL: return "接口地址无效"
+        case .server(let msg): return msg
+        case .decoding: return "数据解析失败"
+        }
+    }
+}
+
+final class APIClient {
+    /// 模拟器访问本机后端；真机请改成局域网 IP。
+    var baseURL: URL = URL(string: "http://127.0.0.1:8000/api/v1")!
+
+    private let decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        return d
+    }()
+
+    private let encoder = JSONEncoder()
+
+    func fetchKnowledgePoints(subject: String? = nil) async throws -> [KnowledgePoint] {
+        var components = URLComponents(url: baseURL.appendingPathComponent("knowledge-points"), resolvingAgainstBaseURL: false)!
+        if let subject {
+            components.queryItems = [URLQueryItem(name: "subject", value: subject)]
+        }
+        guard let url = components.url else { throw APIError.badURL }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        try validate(response)
+        return try decoder.decode([KnowledgePoint].self, from: data)
+    }
+
+    func startPractice(mode: PracticeMode, subject: Subject?, count: Int, familyCode: String) async throws -> StartPracticeResponse {
+        var payload: [String: Any] = [
+            "mode": mode.rawValue,
+            "count": count,
+            "family_code": familyCode,
+        ]
+        if let subject {
+            payload["subject"] = subject.rawValue
+        }
+        return try await post("practice/start", json: payload, as: StartPracticeResponse.self)
+    }
+
+    func submitAnswer(sessionId: String, questionId: String, answer: String, familyCode: String) async throws -> SubmitAnswerResponse {
+        try await post(
+            "practice/submit",
+            json: [
+                "session_id": sessionId,
+                "question_id": questionId,
+                "answer": answer,
+                "family_code": familyCode,
+            ],
+            as: SubmitAnswerResponse.self
+        )
+    }
+
+    func endPractice(sessionId: String, durationSeconds: Int, familyCode: String) async throws {
+        struct OK: Codable { let ok: Bool }
+        _ = try await post(
+            "practice/end",
+            json: [
+                "session_id": sessionId,
+                "duration_seconds": durationSeconds,
+                "family_code": familyCode,
+            ],
+            as: OK.self
+        )
+    }
+
+    func parentGate() async throws -> ParentGateChallenge {
+        let url = baseURL.appendingPathComponent("parent/gate")
+        let (data, response) = try await URLSession.shared.data(from: url)
+        try validate(response)
+        return try decoder.decode(ParentGateChallenge.self, from: data)
+    }
+
+    func verifyParentGate(answer: Int, familyCode: String) async throws {
+        struct OK: Codable { let ok: Bool }
+        _ = try await post(
+            "parent/gate/verify",
+            json: ["answer": answer, "family_code": familyCode],
+            as: OK.self
+        )
+    }
+
+    func parentSummary(familyCode: String) async throws -> ParentSummary {
+        var components = URLComponents(url: baseURL.appendingPathComponent("parent/summary"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [URLQueryItem(name: "family_code", value: familyCode)]
+        guard let url = components.url else { throw APIError.badURL }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        try validate(response)
+        return try decoder.decode(ParentSummary.self, from: data)
+    }
+
+    func generateSimilar(seedQuestionId: String, familyCode: String) async throws -> GenerateSimilarResponse {
+        try await post(
+            "questions/generate-similar",
+            json: [
+                "seed_question_id": seedQuestionId,
+                "family_code": familyCode,
+                "use_llm": false,
+            ],
+            as: GenerateSimilarResponse.self
+        )
+    }
+
+    private func post<T: Decodable>(_ path: String, json: [String: Any], as type: T.Type) async throws -> T {
+        let url = baseURL.appendingPathComponent(path)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: json)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try validate(response)
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            throw APIError.decoding
+        }
+    }
+
+    private func validate(_ response: URLResponse) throws {
+        guard let http = response as? HTTPURLResponse else { throw APIError.server("无响应") }
+        guard (200..<300).contains(http.statusCode) else {
+            throw APIError.server("服务器错误 (\(http.statusCode))")
+        }
+    }
+}

@@ -1,0 +1,22 @@
+# Python
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+backend/.env
+
+# Data
+data/
+*.db
+
+# macOS / Xcode
+.DS_Store
+ios/**/xcuserdata/
+ios/**/DerivedData/
+ios/*.xcodeproj/
+ios/*.xcworkspace/
+!ios/project.yml
+
+# IDE
+.idea/
+.vscode/

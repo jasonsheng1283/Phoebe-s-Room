@@ -1,6 +1,6 @@
 # BACKGROUND — 产品定位与背景
 
-> 状态：MVP 细节已确认（待开发许可）  
+> 状态：MVP 开发中（主干已实现，待 Xcode 联调 / TestFlight）  
 > 最近更新：2026-07-24  
 > 讨论存档：  
 > - `docs/discussions/20260724_kickoff.md`  
@@ -49,7 +49,7 @@
 
 ## 当前阶段约束
 
-- 需求与细节已确认并写入计划；**未获明确开发许可前不进入业务代码开发**。
+- 已获开发许可并完成后端 + SwiftUI 源码主干；iOS 需在 Mac 本地编译；TestFlight 待开发者账号。
 - 产品名 / 仓库名：`Phoebe-s-Room`（Phoebe's Room）。
 
 ## 非目标（首期）

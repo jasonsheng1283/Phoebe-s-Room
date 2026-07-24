@@ -1,0 +1,27 @@
+{
+  "grade": 2,
+  "subjects": [
+    {
+      "id": "math",
+      "name": "数学",
+      "knowledge_points": [
+        {"id": "math.addition_within_100", "name": "100以内加法", "prerequisites": []},
+        {"id": "math.subtraction_within_100", "name": "100以内减法", "prerequisites": ["math.addition_within_100"]},
+        {"id": "math.word_problem_add_sub", "name": "加减法应用题", "prerequisites": ["math.addition_within_100", "math.subtraction_within_100"]},
+        {"id": "math.place_value", "name": "数位与读写", "prerequisites": []},
+        {"id": "math.measurement_length", "name": "长度初步", "prerequisites": []}
+      ]
+    },
+    {
+      "id": "english",
+      "name": "英语",
+      "knowledge_points": [
+        {"id": "en.phonics_short_a", "name": "短元音 a 拼读", "prerequisites": []},
+        {"id": "en.phonics_short_e", "name": "短元音 e 拼读", "prerequisites": []},
+        {"id": "en.sight_words_set1", "name": "常见词 Set1", "prerequisites": []},
+        {"id": "en.listening_colors", "name": "听力：颜色", "prerequisites": []},
+        {"id": "en.listening_animals", "name": "听力：动物", "prerequisites": []}
+      ]
+    }
+  ]
+}

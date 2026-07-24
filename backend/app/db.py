@@ -1,0 +1,185 @@
+from __future__ import annotations
+
+import json
+import sqlite3
+from contextlib import contextmanager
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Iterator
+
+from .config import get_settings
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def connect() -> sqlite3.Connection:
+    settings = get_settings()
+    settings.db_path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(settings.db_path, check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
+
+
+@contextmanager
+def get_db() -> Iterator[sqlite3.Connection]:
+    conn = connect()
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+def init_db() -> None:
+    with get_db() as conn:
+        conn.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS knowledge_points (
+              id TEXT PRIMARY KEY,
+              subject TEXT NOT NULL,
+              name TEXT NOT NULL,
+              prerequisites_json TEXT NOT NULL DEFAULT '[]'
+            );
+
+            CREATE TABLE IF NOT EXISTS questions (
+              id TEXT PRIMARY KEY,
+              subject TEXT NOT NULL,
+              knowledge_point_id TEXT NOT NULL,
+              type TEXT NOT NULL,
+              stem TEXT NOT NULL,
+              options_json TEXT NOT NULL DEFAULT '[]',
+              answer TEXT NOT NULL,
+              explanation TEXT NOT NULL,
+              tts_text TEXT,
+              difficulty INTEGER NOT NULL DEFAULT 1,
+              seed INTEGER NOT NULL DEFAULT 0,
+              status TEXT NOT NULL DEFAULT 'approved',
+              FOREIGN KEY (knowledge_point_id) REFERENCES knowledge_points(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS mastery (
+              knowledge_point_id TEXT PRIMARY KEY,
+              correct_count INTEGER NOT NULL DEFAULT 0,
+              attempt_count INTEGER NOT NULL DEFAULT 0,
+              stars INTEGER NOT NULL DEFAULT 0,
+              updated_at TEXT NOT NULL,
+              FOREIGN KEY (knowledge_point_id) REFERENCES knowledge_points(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS practice_sessions (
+              id TEXT PRIMARY KEY,
+              mode TEXT NOT NULL,
+              subject TEXT,
+              started_at TEXT NOT NULL,
+              ended_at TEXT,
+              duration_seconds INTEGER NOT NULL DEFAULT 0
+            );
+
+            CREATE TABLE IF NOT EXISTS attempts (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              session_id TEXT NOT NULL,
+              question_id TEXT NOT NULL,
+              user_answer TEXT NOT NULL,
+              is_correct INTEGER NOT NULL,
+              created_at TEXT NOT NULL,
+              FOREIGN KEY (session_id) REFERENCES practice_sessions(id),
+              FOREIGN KEY (question_id) REFERENCES questions(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS generation_logs (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              seed_question_id TEXT,
+              payload_json TEXT NOT NULL,
+              accepted INTEGER NOT NULL,
+              reason TEXT,
+              created_at TEXT NOT NULL
+            );
+            """
+        )
+    seed_content()
+
+
+def seed_content() -> None:
+    settings = get_settings()
+    kp_file = settings.content_path / "knowledge_points.json"
+    q_file = settings.content_path / "seed_questions.json"
+    if not kp_file.exists() or not q_file.exists():
+        raise FileNotFoundError(f"Missing content under {settings.content_path}")
+
+    kp_data = json.loads(kp_file.read_text(encoding="utf-8"))
+    questions = json.loads(q_file.read_text(encoding="utf-8"))
+
+    with get_db() as conn:
+        for subject in kp_data["subjects"]:
+            for kp in subject["knowledge_points"]:
+                conn.execute(
+                    """
+                    INSERT INTO knowledge_points (id, subject, name, prerequisites_json)
+                    VALUES (?, ?, ?, ?)
+                    ON CONFLICT(id) DO UPDATE SET
+                      subject=excluded.subject,
+                      name=excluded.name,
+                      prerequisites_json=excluded.prerequisites_json
+                    """,
+                    (
+                        kp["id"],
+                        subject["id"],
+                        kp["name"],
+                        json.dumps(kp.get("prerequisites", []), ensure_ascii=False),
+                    ),
+                )
+                conn.execute(
+                    """
+                    INSERT INTO mastery (knowledge_point_id, correct_count, attempt_count, stars, updated_at)
+                    VALUES (?, 0, 0, 0, ?)
+                    ON CONFLICT(knowledge_point_id) DO NOTHING
+                    """,
+                    (kp["id"], utc_now()),
+                )
+
+        for q in questions:
+            conn.execute(
+                """
+                INSERT INTO questions (
+                  id, subject, knowledge_point_id, type, stem, options_json, answer,
+                  explanation, tts_text, difficulty, seed, status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved')
+                ON CONFLICT(id) DO UPDATE SET
+                  subject=excluded.subject,
+                  knowledge_point_id=excluded.knowledge_point_id,
+                  type=excluded.type,
+                  stem=excluded.stem,
+                  options_json=excluded.options_json,
+                  answer=excluded.answer,
+                  explanation=excluded.explanation,
+                  tts_text=excluded.tts_text,
+                  difficulty=excluded.difficulty,
+                  seed=excluded.seed,
+                  status=excluded.status
+                """,
+                (
+                    q["id"],
+                    q["subject"],
+                    q["knowledge_point_id"],
+                    q["type"],
+                    q["stem"],
+                    json.dumps(q.get("options", []), ensure_ascii=False),
+                    str(q["answer"]).strip(),
+                    q["explanation"],
+                    q.get("tts_text"),
+                    int(q.get("difficulty", 1)),
+                    1 if q.get("seed", True) else 0,
+                ),
+            )
+
+
+def row_to_dict(row: sqlite3.Row | None) -> dict[str, Any] | None:
+    if row is None:
+        return None
+    return dict(row)

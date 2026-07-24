@@ -44,14 +44,15 @@ AI 辅助儿童/青少年进行学科知识点强化训练的学习空间，目�
 
 ## 技术规范
 
-> 见 `docs/plan/20260724_plan.md`。客户端：**SwiftUI（iPadOS）**；后端：轻量 API + 服务端 LLM 代理。**未获明确开发许可前，不初始化业务脚手架。**
+> 见 `docs/plan/20260724_plan.md`。客户端：**SwiftUI（iPadOS）**（`ios/`）；后端：**FastAPI + SQLite**（`backend/`）+ 服务端 LLM 代理（可选）。
 
 - 主设备：iPad；发布：先 TestFlight，再 App Store
 - 题型：数学选择/填空/应用题；英语单词拼读/听力
-- 作答：点选为主，支持输入/手写（PencilKit）
+- 作答：点选为主，支持输入/手写（PencilKit + 文本确认）
 - 掌握度：星级；MVP 含家长页（门禁）
-- LLM API Key 仅存服务端
+- LLM API Key 仅存服务端（`backend/.env`）
 - 儿童数据最小化；禁止自由闲聊；人设「爸爸 & 朋友」
+- 启动后端前可读 `backend/README.md`；iOS 见 `ios/README.md`
 
 ## 文档语言
 
