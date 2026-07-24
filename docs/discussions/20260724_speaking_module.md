@@ -4,7 +4,7 @@
 |------|------|
 | 日期 | 2026-07-24 |
 | 类型 | 新功能需求确认 |
-| 阶段 | 第 2～3 步完成（复述已确认 → 计划已起草）；**等待明确开发许可** |
+| 阶段 | 主干已实现；见验收 `docs/reviews/20260724_speaking_acceptance.md` |
 | 前置 | MVP v0.1.0 已合入 `main` |
 | 关联计划 | `docs/plan/20260724_plan_speaking.md` |
 | 关联 PRD | `docs/prd/speaking_20260724.md` |
