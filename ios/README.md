@@ -1,49 +1,74 @@
-# iOS 客户端（SwiftUI / iPad）
+# iOS 客户端（SwiftUI / iPad 优先）
 
-本目录为 **Phoebe's Room** 的 iPad 客户端源码。当前云端环境无 Xcode，无法在此完成真机编译；请在 Mac 上打开工程。
+仓库已包含 **`PhoebeRoom.xcodeproj`**，Mac 上可直接打开，无需先跑 XcodeGen。
 
-## 快速开始
+> 云端 Linux 无法运行 Xcode / 模拟器；联调请在本机 Mac 执行。
 
-### 方式 A：用 XcodeGen 生成工程（推荐）
+## 一键联调（推荐）
+
+在 **Mac** 终端：
 
 ```bash
-brew install xcodegen
-cd ios
-xcodegen generate
-open PhoebeRoom.xcodeproj
+chmod +x ios/scripts/mac-sim-debug.sh
+./ios/scripts/mac-sim-debug.sh
 ```
 
-### 方式 B：手动创建 Xcode 工程
+脚本会：
 
-1. Xcode → New iOS App（SwiftUI，Swift，iPad only）
-2. 将 `PhoebeRoom/` 下源文件加入 Target
-3. 使用本目录 `Info.plist`（或合并 ATS / 方向设置）
-4. Deployment Target ≥ iOS 17，`TARGETED_DEVICE_FAMILY = 2`（iPad）
+1. 准备 `backend` 虚拟环境并启动 `http://127.0.0.1:8000`
+2. 打开 `ios/PhoebeRoom.xcodeproj`
 
-## 联调后端
+然后在 Xcode：
 
-1. 在仓库根或 `backend/` 启动 API：
+1. 运行目的地选 **iPad 模拟器**（也可用 iPhone 模拟器做冒烟）
+2. ⌘R 运行
+3. 首页 DEBUG 条应显示 **后端已连通**
+4. 练习数学/英语/口语陪练；口语需允许麦克风
+
+### 命令行构建（可选）
+
+```bash
+chmod +x ios/scripts/xcodebuild-sim.sh
+./ios/scripts/xcodebuild-sim.sh
+# 或指定机型：
+./ios/scripts/xcodebuild-sim.sh 'platform=iOS Simulator,name=iPad Air 11-inch (M2)'
+```
+
+查看本机可用模拟器：`xcrun simctl list devices available`
+
+## 联调地址
+
+| 场景 | Base URL |
+|------|----------|
+| 模拟器 | `http://127.0.0.1:8000/api/v1`（默认） |
+| 真机 | `http://<Mac局域网IP>:8000/api/v1`（首页联调条「改地址」） |
+
+后端：
 
 ```bash
 cd backend
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # 可按需填 LLM_API_KEY
+source .venv/bin/activate   # 若已按脚本创建
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-2. 模拟器默认请求 `http://127.0.0.1:8000/api/v1`（见 `Services/APIClient.swift`）。
-3. 真机请改为 Mac 局域网 IP，并确保 ATS 允许本地网络（已在 Info.plist 打开 `NSAllowsLocalNetworking`）。
+## 重新生成工程（可选）
+
+若你更习惯 XcodeGen：
+
+```bash
+brew install xcodegen
+cd ios && xcodegen generate
+```
+
+注意：手改 `project.pbxproj` 后与 `project.yml` 可能不一致，二选一维护即可。
 
 ## 已实现界面
 
-- 首页：Phoebe's Room 品牌 + 数学/英语入口 + **口语陪练独立入口**
-- 三模式：课后巩固 / 薄弱专项 / 日常习惯
-- 练习流：点选、输入、手写确认、英语 TTS 播放、解析与星级
-- 口语：示范 TTS、录音、回放、提交评测、鼓励点评与星级
-- 知识点星级列表
-- 家长门禁 + 进度摘要（含口语统计）
+- 首页：品牌 + 数学/英语 + **口语陪练** + DEBUG 联调条
+- 三模式练习、手写确认、TTS、星级
+- 口语：示范 / 录音 / 回放 / 点评星级
+- 家长门禁与摘要
 
 ## TestFlight
 
-在 Apple Developer 配置 Bundle ID、证书与 App Store Connect 后，Archive → Distribute → TestFlight。隐私文案见 `docs/legal/privacy_draft.md`。
+见 `docs/legal/privacy_draft.md`；需 Apple Developer 账号 Archive。

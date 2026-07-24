@@ -35,6 +35,10 @@ struct HomeView: View {
                     }
                     .padding(.top, 12)
 
+                    #if DEBUG
+                    DevServerBanner()
+                    #endif
+
                     HStack(spacing: 16) {
                         ForEach(Subject.allCases) { subject in
                             NavigationLink(value: subject) {

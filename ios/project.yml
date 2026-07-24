@@ -8,7 +8,7 @@ options:
 settings:
   BASE:
     SWIFT_VERSION: "5.0"
-    TARGETED_DEVICE_FAMILY: "2"
+    TARGETED_DEVICE_FAMILY: "1,2"
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
@@ -24,10 +24,20 @@ targets:
         INFOPLIST_FILE: PhoebeRoom/Info.plist
         GENERATE_INFOPLIST_FILE: false
         CURRENT_PROJECT_VERSION: 1
-        MARKETING_VERSION: 0.1.0
+        MARKETING_VERSION: 0.2.0
         SUPPORTS_XR_DESIGNED_FOR_IPAD: false
-        TARGETED_DEVICE_FAMILY: "2"
+        TARGETED_DEVICE_FAMILY: "1,2"
     info:
       path: PhoebeRoom/Info.plist
       properties:
         UILaunchScreen: {}
+        NSMicrophoneUsageDescription: 用于英语口语陪练：跟读与回答时录音，以便爸爸朋友给你鼓励和星级反馈。
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+schemes:
+  PhoebeRoom:
+    build:
+      targets:
+        PhoebeRoom: all
+    run:
+      config: Debug

@@ -13,9 +13,12 @@ data/
 .DS_Store
 ios/**/xcuserdata/
 ios/**/DerivedData/
-ios/*.xcodeproj/
+ios/DerivedData/
 ios/*.xcworkspace/
-!ios/project.yml
+# 保留可打开的工程；仅忽略用户本地状态
+!ios/PhoebeRoom.xcodeproj/
+ios/PhoebeRoom.xcodeproj/project.xcworkspace/xcuserdata/
+ios/PhoebeRoom.xcodeproj/xcuserdata/
 
 # IDE
 .idea/

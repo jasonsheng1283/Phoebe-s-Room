@@ -1,0 +1,338 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1965B201047F43EF9D87755B /* PhoebeRoomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844A4E7727FA4F3D9006956D /* PhoebeRoomApp.swift */; };
+		2CED8DF36FBB44AEA58D476B /* HandwritingCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DAA630E49649CA8789212F /* HandwritingCanvas.swift */; };
+		9F9461FC23C149EC84B43DB9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E27C4153A47AA8907E9A6 /* Theme.swift */; };
+		AC30F3E7490E4F498C213AC2 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD4D8DEAD48D694EC2DD4 /* AppState.swift */; };
+		EA1628E6732B4737A10C5509 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF24BD8EA28049BCB20A118C /* Models.swift */; };
+		EE8250FF753F4786B40F1A6A /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C4D04545964E688E3EB76B /* APIConfig.swift */; };
+		92552F3BF22D49D483D3749A /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D938C240C104641942A8BFC /* APIClient.swift */; };
+		9E5AC0891A0D4B5BA8B16957 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50DE4360DE4B9F808CE5E6 /* AudioRecorder.swift */; };
+		A838FD2663B74201AEA01C08 /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46D30026BD844F7BE008BB6 /* SpeechService.swift */; };
+		DCE8EA22F99F42E7B5C7E3F7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02CEFBFCD948C0BFA1B395 /* HomeView.swift */; };
+		93B0EFB9324D4726B47296D7 /* ParentAndKnowledgeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B06733022E4B8184AFEB9E /* ParentAndKnowledgeViews.swift */; };
+		DBEEB6052AE74529BE0D091E /* PracticeSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D99A67E24F34E909AFB5E7D /* PracticeSessionView.swift */; };
+		4791B86ACE9D44C894722F27 /* SpeakingSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5684352085164931A8ED15DD /* SpeakingSessionView.swift */; };
+		2D6CC330147343BCB96603AF /* DevServerBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C158986F2ABD485B86B40E4E /* DevServerBanner.swift */; };
+		C85E15BCC30F496BB53CE387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 513A85D319F843ED9F10F082 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		844A4E7727FA4F3D9006956D /* PhoebeRoomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoebeRoomApp.swift; sourceTree = "<group>"; };
+		25DAA630E49649CA8789212F /* HandwritingCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandwritingCanvas.swift; sourceTree = "<group>"; };
+		3B3E27C4153A47AA8907E9A6 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D3DBD4D8DEAD48D694EC2DD4 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		EF24BD8EA28049BCB20A118C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		A8C4D04545964E688E3EB76B /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
+		9D938C240C104641942A8BFC /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		FE50DE4360DE4B9F808CE5E6 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		F46D30026BD844F7BE008BB6 /* SpeechService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechService.swift; sourceTree = "<group>"; };
+		1B02CEFBFCD948C0BFA1B395 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F5B06733022E4B8184AFEB9E /* ParentAndKnowledgeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentAndKnowledgeViews.swift; sourceTree = "<group>"; };
+		2D99A67E24F34E909AFB5E7D /* PracticeSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionView.swift; sourceTree = "<group>"; };
+		5684352085164931A8ED15DD /* SpeakingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakingSessionView.swift; sourceTree = "<group>"; };
+		C158986F2ABD485B86B40E4E /* DevServerBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevServerBanner.swift; sourceTree = "<group>"; };
+		513A85D319F843ED9F10F082 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B3574D4D9EE4D6C97F403A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02D675BF7DBC44D9B8EF05CF /* PhoebeRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhoebeRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42C2FA54E5D24216A28AC51C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6CE8F2E558D6433DB7919482 = {
+			isa = PBXGroup;
+			children = (
+				9EE43F4C477B43ABA460785A /* PhoebeRoom */,
+				797CF8EE83B446208B4F7C95 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		797CF8EE83B446208B4F7C95 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02D675BF7DBC44D9B8EF05CF /* PhoebeRoom.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9EE43F4C477B43ABA460785A /* PhoebeRoom */ = {
+			isa = PBXGroup;
+			children = (
+				844A4E7727FA4F3D9006956D /* PhoebeRoomApp.swift */,
+				47D3AF6B16E94808842051CC /* Config */,
+				7374194263174C97A9B2B7E0 /* Components */,
+				D8B5DAE86F964211AA9864AA /* Models */,
+				D08136DE1C054AA2BB4672DE /* Services */,
+				754EB7F5661C41E5A866D48C /* Views */,
+				513A85D319F843ED9F10F082 /* Assets.xcassets */,
+				1B3574D4D9EE4D6C97F403A9 /* Info.plist */,
+			);
+			path = PhoebeRoom;
+			sourceTree = "<group>";
+		};
+		47D3AF6B16E94808842051CC /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A8C4D04545964E688E3EB76B /* APIConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		7374194263174C97A9B2B7E0 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				25DAA630E49649CA8789212F /* HandwritingCanvas.swift */,
+				3B3E27C4153A47AA8907E9A6 /* Theme.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D8B5DAE86F964211AA9864AA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D3DBD4D8DEAD48D694EC2DD4 /* AppState.swift */,
+				EF24BD8EA28049BCB20A118C /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D08136DE1C054AA2BB4672DE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9D938C240C104641942A8BFC /* APIClient.swift */,
+				FE50DE4360DE4B9F808CE5E6 /* AudioRecorder.swift */,
+				F46D30026BD844F7BE008BB6 /* SpeechService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		754EB7F5661C41E5A866D48C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1B02CEFBFCD948C0BFA1B395 /* HomeView.swift */,
+				F5B06733022E4B8184AFEB9E /* ParentAndKnowledgeViews.swift */,
+				2D99A67E24F34E909AFB5E7D /* PracticeSessionView.swift */,
+				5684352085164931A8ED15DD /* SpeakingSessionView.swift */,
+				C158986F2ABD485B86B40E4E /* DevServerBanner.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		38C3E3A7C23347B988A6E187 /* PhoebeRoom */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 20A8938A1A1E47F1BFEDC6FD /* Build configuration list for PBXNativeTarget "PhoebeRoom" */;
+			buildPhases = (
+				506C3AD9340741FEBA515E55 /* Sources */,
+				42C2FA54E5D24216A28AC51C /* Frameworks */,
+				14E9ABF4D1664B01931EE996 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhoebeRoom;
+			productName = PhoebeRoom;
+			productReference = 02D675BF7DBC44D9B8EF05CF /* PhoebeRoom.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F9DB772FC76F4DF2B90E888D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					38C3E3A7C23347B988A6E187 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A6FEE756F7F74FD28A857AFE /* Build configuration list for PBXProject "PhoebeRoom" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 6CE8F2E558D6433DB7919482;
+			productRefGroup = 797CF8EE83B446208B4F7C95 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				38C3E3A7C23347B988A6E187 /* PhoebeRoom */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		14E9ABF4D1664B01931EE996 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C85E15BCC30F496BB53CE387 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		506C3AD9340741FEBA515E55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1965B201047F43EF9D87755B /* PhoebeRoomApp.swift in Sources */,
+				2CED8DF36FBB44AEA58D476B /* HandwritingCanvas.swift in Sources */,
+				9F9461FC23C149EC84B43DB9 /* Theme.swift in Sources */,
+				AC30F3E7490E4F498C213AC2 /* AppState.swift in Sources */,
+				EA1628E6732B4737A10C5509 /* Models.swift in Sources */,
+				EE8250FF753F4786B40F1A6A /* APIConfig.swift in Sources */,
+				92552F3BF22D49D483D3749A /* APIClient.swift in Sources */,
+				9E5AC0891A0D4B5BA8B16957 /* AudioRecorder.swift in Sources */,
+				A838FD2663B74201AEA01C08 /* SpeechService.swift in Sources */,
+				DCE8EA22F99F42E7B5C7E3F7 /* HomeView.swift in Sources */,
+				93B0EFB9324D4726B47296D7 /* ParentAndKnowledgeViews.swift in Sources */,
+				DBEEB6052AE74529BE0D091E /* PracticeSessionView.swift in Sources */,
+				4791B86ACE9D44C894722F27 /* SpeakingSessionView.swift in Sources */,
+				2D6CC330147343BCB96603AF /* DevServerBanner.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AABDA35C27ED470FB049FA2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		58E05E26FD9545F48FAA23D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2CECEF03D9914727BE4A9E23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PhoebeRoom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.phoebesroom.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4385C539BC074EC19D8060A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PhoebeRoom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.phoebesroom.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A6FEE756F7F74FD28A857AFE /* Build configuration list for PBXProject "PhoebeRoom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AABDA35C27ED470FB049FA2C /* Debug */,
+				58E05E26FD9545F48FAA23D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		20A8938A1A1E47F1BFEDC6FD /* Build configuration list for PBXNativeTarget "PhoebeRoom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CECEF03D9914727BE4A9E23 /* Debug */,
+				4385C539BC074EC19D8060A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F9DB772FC76F4DF2B90E888D /* Project object */;
+}

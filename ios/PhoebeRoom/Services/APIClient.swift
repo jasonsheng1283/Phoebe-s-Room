@@ -15,8 +15,8 @@ enum APIError: LocalizedError {
 }
 
 final class APIClient {
-    /// 模拟器访问本机后端；真机请改成局域网 IP。
-    var baseURL: URL = URL(string: "http://127.0.0.1:8000/api/v1")!
+    /// 模拟器默认本机后端；可在 DEBUG 联调条中修改。
+    var baseURL: URL = APIConfig.baseURL
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
@@ -24,6 +24,14 @@ final class APIClient {
     }()
 
     private let encoder = JSONEncoder()
+
+    func healthCheck() async throws -> Bool {
+        let url = baseURL.appendingPathComponent("health")
+        let (data, response) = try await URLSession.shared.data(from: url)
+        try validate(response)
+        guard let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { return false }
+        return (obj["status"] as? String) == "ok"
+    }
 
     func fetchKnowledgePoints(subject: String? = nil) async throws -> [KnowledgePoint] {
         var components = URLComponents(url: baseURL.appendingPathComponent("knowledge-points"), resolvingAgainstBaseURL: false)!
