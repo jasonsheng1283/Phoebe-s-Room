@@ -6,7 +6,11 @@
 
 ### Added
 
-- （空）后续改动记于此
+- 英语口语陪练：需求确认、增量 PRD 与实现计划（待开发许可）
+  - `docs/discussions/20260724_speaking_module.md`
+  - `docs/prd/speaking_20260724.md`
+  - `docs/plan/20260724_plan_speaking.md`
+  - 功能点 F-030～F-036
 
 ## [0.1.0] - 2026-07-24
 

@@ -5,17 +5,20 @@
 
 ## 当前有效 PRD
 
+| 产品基线 | 路径 | 状态 |
+|----------|------|------|
+| 核心 MVP（做题闭环） | `docs/prd/draft_20260724.md` | 已合入 main（v0.1.0） |
+| **英语口语陪练（增量）** | `docs/prd/speaking_20260724.md` | Draft — 范围已确认，待开发许可 |
+
 | 字段 | 值 |
 |------|-----|
-| 状态 | Draft — 细节已确认，待开发许可 |
-| 当前路径 | `docs/prd/draft_20260724.md` |
-| 基于模板 | `docs/prd/template.md` |
 | 最近更新 | 2026-07-24 |
-| 相关讨论 | `docs/discussions/20260724_kickoff.md`、`docs/discussions/20260724_scope_confirmed.md`、`docs/discussions/20260724_detail_confirmed.md` |
-| 相关计划 | `docs/plan/20260724_plan.md` |
+| 口语讨论 | `docs/discussions/20260724_speaking_module.md` |
+| 口语计划 | `docs/plan/20260724_plan_speaking.md` |
 
 ## 历史版本
 
 | 日期 | 路径 | 说明 |
 |------|------|------|
-| 2026-07-24 | `docs/prd/draft_20260724.md` | 启动讨论草案 → 同日更新为 MVP 范围确认版 |
+| 2026-07-24 | `docs/prd/draft_20260724.md` | 核心 MVP |
+| 2026-07-24 | `docs/prd/speaking_20260724.md` | 口语陪练增量 PRD |
