@@ -70,6 +70,8 @@
 
 - `docs/GLOSSARY.md`
 - `docs/discussions/20260724_detail_confirmed.md`
+- `docs/discussions/20260724_speaking_module.md`（口语陪练，待开发许可）
 - `docs/prd/prd.md`
 - `docs/plan/20260724_plan.md`
+- `docs/plan/20260724_plan_speaking.md`
 - `docs/features.md`
