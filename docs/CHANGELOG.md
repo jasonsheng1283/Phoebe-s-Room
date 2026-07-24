@@ -6,7 +6,10 @@
 
 ### Added
 
-- （空）
+- 可提交的 `ios/PhoebeRoom.xcodeproj` 与 shared scheme
+- Mac 一键联调脚本 `ios/scripts/mac-sim-debug.sh`
+- DEBUG 联调条（后端健康检查 / 改 Base URL）
+- 计划 `docs/plan/20260724_plan_mac_sim.md`
 
 ## [0.2.0] - 2026-07-24
 

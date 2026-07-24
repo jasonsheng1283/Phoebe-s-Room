@@ -28,9 +28,14 @@ cp .env.example .env
 # 测试：python3 scripts/smoke_test.py
 ```
 
-### iOS
+### iOS（Mac 模拟器联调）
 
-见 [ios/README.md](ios/README.md)（`xcodegen generate` → 打开 `PhoebeRoom.xcodeproj`）。
+```bash
+./ios/scripts/mac-sim-debug.sh
+# Xcode 选 iPad Simulator → ⌘R
+```
+
+详见 [ios/README.md](ios/README.md)。
 
 ## 文档
 

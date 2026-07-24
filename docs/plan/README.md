@@ -33,3 +33,4 @@
 |------|------|------|
 | `20260724_plan.md` | Merged | 已合入 main；M1～M5 留作后续 |
 | `20260724_plan_speaking.md` | Merged | 已合入 main；S1～S3 留作后续 |
+| `20260724_plan_mac_sim.md` | In Progress | Mac 模拟器联调工程与脚本 |
