@@ -4,7 +4,9 @@ AI 辅助儿童与青少年进行学科知识点强化训练的学习空间，�
 
 ## 当前阶段
 
-**需求讨论与文档建制中。** 未获明确许可前不进入业务功能开发。
+**MVP 范围已确认，实现计划已起草。** 未获明确开发许可前不进入业务功能开发。
+
+MVP 摘要：家庭自用 · 小学二年级 · 数学+英语 · iPad/App Store · 做题+解析 · 人设「爸爸&朋友」· 题库+AI 相似题。
 
 ## 快速入口
 
@@ -15,7 +17,8 @@ AI 辅助儿童与青少年进行学科知识点强化训练的学习空间，�
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | 需求工作流 |
 | [docs/features.md](docs/features.md) | 功能点列表 |
 | [docs/prd/prd.md](docs/prd/prd.md) | PRD 入口 |
-| [docs/discussions/20260724_kickoff.md](docs/discussions/20260724_kickoff.md) | 启动讨论（含疑问与建议） |
+| [docs/plan/20260724_plan.md](docs/plan/20260724_plan.md) | MVP 实现计划（待许可） |
+| [docs/discussions/20260724_scope_confirmed.md](docs/discussions/20260724_scope_confirmed.md) | 范围确认讨论 |
 | [docs/CHANGELOG.md](docs/CHANGELOG.md) | 变更日志 |
 | [docs/PITFALLS.md](docs/PITFALLS.md) | 踩坑记录 |
 

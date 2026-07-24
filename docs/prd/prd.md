@@ -7,14 +7,15 @@
 
 | 字段 | 值 |
 |------|-----|
-| 状态 | Draft（讨论中，尚未定稿） |
+| 状态 | Draft — 范围已确认，待开发许可 |
 | 当前路径 | `docs/prd/draft_20260724.md` |
 | 基于模板 | `docs/prd/template.md` |
 | 最近更新 | 2026-07-24 |
-| 相关讨论 | `docs/discussions/20260724_kickoff.md` |
+| 相关讨论 | `docs/discussions/20260724_kickoff.md`、`docs/discussions/20260724_scope_confirmed.md` |
+| 相关计划 | `docs/plan/20260724_plan.md` |
 
 ## 历史版本
 
 | 日期 | 路径 | 说明 |
 |------|------|------|
-| 2026-07-24 | `docs/prd/draft_20260724.md` | 启动讨论阶段草案，大量条目待确认 |
+| 2026-07-24 | `docs/prd/draft_20260724.md` | 启动讨论草案 → 同日更新为 MVP 范围确认版 |
