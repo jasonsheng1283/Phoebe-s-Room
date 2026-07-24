@@ -6,19 +6,21 @@
 
 ### Added
 
-- MVP 范围确认讨论：`docs/discussions/20260724_scope_confirmed.md`
-- MVP 实现计划：`docs/plan/20260724_plan.md`
-- MVP 功能点 F-010～F-024（待开发许可）
+- 细节确认讨论：`docs/discussions/20260724_detail_confirmed.md`
+- 功能点 F-025～F-029（题型、手写、SwiftUI 工程）
 
 ### Changed
 
-- 更新 `BACKGROUND.md` / `GLOSSARY.md` / PRD 为已确认的 MVP 范围
-- 收敛 `features.md` 候选列表为正式 MVP 功能表
+- 计划与 PRD 改为 **SwiftUI**；确认题型、点选+输入/手写、星级、家长页、先 TestFlight
+- 更新 BACKGROUND / GLOSSARY / features / rule.mdc
+
+### Added（此前）
+
+- MVP 范围确认讨论与实现计划初稿
+- 文档体系与协作规范首版
 
 ## [0.0.1] - 2026-07-24
 
 ### Added
 
-- 仓库初始化（`README.md`）
-- 文档体系与协作规范首版：`docs/`、`.cursor/rules/rule.mdc`
-- 启动讨论存档：`docs/discussions/20260724_kickoff.md`
+- 仓库初始化与文档体系首版

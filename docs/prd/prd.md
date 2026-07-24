@@ -7,11 +7,11 @@
 
 | 字段 | 值 |
 |------|-----|
-| 状态 | Draft — 范围已确认，待开发许可 |
+| 状态 | Draft — 细节已确认，待开发许可 |
 | 当前路径 | `docs/prd/draft_20260724.md` |
 | 基于模板 | `docs/prd/template.md` |
 | 最近更新 | 2026-07-24 |
-| 相关讨论 | `docs/discussions/20260724_kickoff.md`、`docs/discussions/20260724_scope_confirmed.md` |
+| 相关讨论 | `docs/discussions/20260724_kickoff.md`、`docs/discussions/20260724_scope_confirmed.md`、`docs/discussions/20260724_detail_confirmed.md` |
 | 相关计划 | `docs/plan/20260724_plan.md` |
 
 ## 历史版本
