@@ -1,6 +1,6 @@
 # BACKGROUND — 产品定位与背景
 
-> 状态：MVP 开发中（主干已实现，待 Xcode 联调 / TestFlight）  
+> 状态：已合入 main（v0.1.0）；后续联调/TestFlight 见 backlog  
 > 最近更新：2026-07-24  
 > 讨论存档：  
 > - `docs/discussions/20260724_kickoff.md`  

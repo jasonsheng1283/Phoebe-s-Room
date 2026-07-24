@@ -6,14 +6,21 @@
 
 ### Added
 
+- （空）后续改动记于此
+
+## [0.1.0] - 2026-07-24
+
+### Added
+
 - FastAPI 后端：练习/批改/星级/家长/相似题（`backend/`）
 - 内容种子：二年级数学与英语知识点与题目（`content/`）
 - SwiftUI iPad 客户端源码（`ios/PhoebeRoom/`）与 XcodeGen 配置
 - 隐私政策草案与验收报告（`docs/legal/`、`docs/reviews/`）
+- 项目文档架构与 MVP 范围/细节确认存档
 
-### Changed
+### Notes
 
-- MVP 计划状态改为 In Progress；功能列表同步实现状态
+- 合入 `main`；验收改进项 M1～M5 暂不实施，留作 backlog
 
 ## [0.0.1] - 2026-07-24
 
