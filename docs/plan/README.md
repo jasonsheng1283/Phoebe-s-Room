@@ -32,4 +32,4 @@
 | 文件 | 状态 | 说明 |
 |------|------|------|
 | `20260724_plan.md` | Merged | 已合入 main；M1～M5 留作后续 |
-| `20260724_plan_speaking.md` | In Progress | 主干已实现；见口语验收报告 |
+| `20260724_plan_speaking.md` | Merged | 已合入 main；S1～S3 留作后续 |

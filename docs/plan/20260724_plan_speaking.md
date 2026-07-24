@@ -3,7 +3,7 @@
 | 字段 | 内容 |
 |------|------|
 | 日期 | 2026-07-24 |
-| 状态 | **In Progress / 主干已实现**（待验收确认是否返工） |
+| 状态 | **Merged to main**（2026-07-24；S1～S3 留作 backlog） |
 | 许可 | 已批准 |
 | 关联讨论 | `docs/discussions/20260724_speaking_module.md` |
 | 关联 PRD | `docs/prd/speaking_20260724.md` |

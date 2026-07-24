@@ -6,9 +6,18 @@
 
 ### Added
 
-- 英语口语陪练：剧本、API（start/submit-audio/end）、STT/星级点评、SwiftUI 独立入口与录音回放
+- （空）
+
+## [0.2.0] - 2026-07-24
+
+### Added
+
+- 英语口语陪练：剧本、API、STT/星级点评、SwiftUI 独立入口与录音回放
 - 家长摘要口语统计字段
-- 验收报告 `docs/reviews/20260724_speaking_acceptance.md`
+
+### Notes
+
+- 合入 `main`；验收改进项 S1～S3 暂不实施
 
 ## [0.1.0] - 2026-07-24
 
