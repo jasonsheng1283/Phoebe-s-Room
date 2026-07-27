@@ -36,6 +36,12 @@ def get_db() -> Iterator[sqlite3.Connection]:
         conn.close()
 
 
+def _ensure_column(conn: sqlite3.Connection, table: str, column: str, ddl: str) -> None:
+    cols = {row[1] for row in conn.execute(f"PRAGMA table_info({table})").fetchall()}
+    if column not in cols:
+        conn.execute(f"ALTER TABLE {table} ADD COLUMN {ddl}")
+
+
 def init_db() -> None:
     with get_db() as conn:
         conn.executescript(
@@ -44,7 +50,9 @@ def init_db() -> None:
               id TEXT PRIMARY KEY,
               subject TEXT NOT NULL,
               name TEXT NOT NULL,
-              prerequisites_json TEXT NOT NULL DEFAULT '[]'
+              prerequisites_json TEXT NOT NULL DEFAULT '[]',
+              semester TEXT,
+              sort_order INTEGER NOT NULL DEFAULT 0
             );
 
             CREATE TABLE IF NOT EXISTS questions (
@@ -60,6 +68,7 @@ def init_db() -> None:
               difficulty INTEGER NOT NULL DEFAULT 1,
               seed INTEGER NOT NULL DEFAULT 0,
               status TEXT NOT NULL DEFAULT 'approved',
+              interaction_json TEXT,
               FOREIGN KEY (knowledge_point_id) REFERENCES knowledge_points(id)
             );
 
@@ -132,8 +141,21 @@ def init_db() -> None:
               FOREIGN KEY (session_id) REFERENCES speaking_sessions(id),
               FOREIGN KEY (prompt_id) REFERENCES speaking_prompts(id)
             );
+
+            CREATE TABLE IF NOT EXISTS extension_progress (
+              activity_id TEXT NOT NULL,
+              grade INTEGER NOT NULL,
+              highest_cleared_level INTEGER NOT NULL DEFAULT 0,
+              updated_at TEXT NOT NULL,
+              PRIMARY KEY (activity_id, grade)
+            );
             """
         )
+        _ensure_column(conn, "knowledge_points", "semester", "semester TEXT")
+        _ensure_column(conn, "knowledge_points", "sort_order", "sort_order INTEGER NOT NULL DEFAULT 0")
+        _ensure_column(conn, "questions", "interaction_json", "interaction_json TEXT")
+        _ensure_column(conn, "questions", "image_asset", "image_asset TEXT")
+        _ensure_column(conn, "questions", "diagram_json", "diagram_json TEXT")
     seed_content()
 
 
@@ -152,22 +174,31 @@ def seed_content() -> None:
     )
 
     with get_db() as conn:
+        keep_ids_by_subject: dict[str, set[str]] = {}
         for subject in kp_data["subjects"]:
-            for kp in subject["knowledge_points"]:
+            subject_id = subject["id"]
+            keep_ids_by_subject.setdefault(subject_id, set())
+            for index, kp in enumerate(subject["knowledge_points"]):
+                keep_ids_by_subject[subject_id].add(kp["id"])
+                sort_order = int(kp.get("sort_order", index))
                 conn.execute(
                     """
-                    INSERT INTO knowledge_points (id, subject, name, prerequisites_json)
-                    VALUES (?, ?, ?, ?)
+                    INSERT INTO knowledge_points (id, subject, name, prerequisites_json, semester, sort_order)
+                    VALUES (?, ?, ?, ?, ?, ?)
                     ON CONFLICT(id) DO UPDATE SET
                       subject=excluded.subject,
                       name=excluded.name,
-                      prerequisites_json=excluded.prerequisites_json
+                      prerequisites_json=excluded.prerequisites_json,
+                      semester=excluded.semester,
+                      sort_order=excluded.sort_order
                     """,
                     (
                         kp["id"],
-                        subject["id"],
+                        subject_id,
                         kp["name"],
                         json.dumps(kp.get("prerequisites", []), ensure_ascii=False),
+                        kp.get("semester"),
+                        sort_order,
                     ),
                 )
                 conn.execute(
@@ -180,12 +211,20 @@ def seed_content() -> None:
                 )
 
         for q in questions:
+            interaction = q.get("interaction")
+            interaction_json = (
+                json.dumps(interaction, ensure_ascii=False) if interaction is not None else None
+            )
+            image_asset = q.get("image_asset")
+            diagram = q.get("diagram")
+            diagram_json = json.dumps(diagram, ensure_ascii=False) if diagram is not None else None
             conn.execute(
                 """
                 INSERT INTO questions (
                   id, subject, knowledge_point_id, type, stem, options_json, answer,
-                  explanation, tts_text, difficulty, seed, status
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved')
+                  explanation, tts_text, difficulty, seed, status, interaction_json, image_asset,
+                  diagram_json
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved', ?, ?, ?)
                 ON CONFLICT(id) DO UPDATE SET
                   subject=excluded.subject,
                   knowledge_point_id=excluded.knowledge_point_id,
@@ -197,7 +236,10 @@ def seed_content() -> None:
                   tts_text=excluded.tts_text,
                   difficulty=excluded.difficulty,
                   seed=excluded.seed,
-                  status=excluded.status
+                  status=excluded.status,
+                  interaction_json=excluded.interaction_json,
+                  image_asset=excluded.image_asset,
+                  diagram_json=excluded.diagram_json
                 """,
                 (
                     q["id"],
@@ -211,6 +253,9 @@ def seed_content() -> None:
                     q.get("tts_text"),
                     int(q.get("difficulty", 1)),
                     1 if q.get("seed", True) else 0,
+                    interaction_json,
+                    image_asset,
+                    diagram_json,
                 ),
             )
 
@@ -240,6 +285,28 @@ def seed_content() -> None:
                     int(sp.get("sort_order", 0)),
                 ),
             )
+
+        # Drop obsolete knowledge points per subject (e.g. math ID redesign).
+        for subject_id, keep_ids in keep_ids_by_subject.items():
+            existing = conn.execute(
+                "SELECT id FROM knowledge_points WHERE subject = ?",
+                (subject_id,),
+            ).fetchall()
+            obsolete = [row["id"] for row in existing if row["id"] not in keep_ids]
+            for kp_id in obsolete:
+                qids = [
+                    row["id"]
+                    for row in conn.execute(
+                        "SELECT id FROM questions WHERE knowledge_point_id = ?",
+                        (kp_id,),
+                    ).fetchall()
+                ]
+                for qid in qids:
+                    conn.execute("DELETE FROM attempts WHERE question_id = ?", (qid,))
+                conn.execute("DELETE FROM questions WHERE knowledge_point_id = ?", (kp_id,))
+                conn.execute("DELETE FROM speaking_prompts WHERE knowledge_point_id = ?", (kp_id,))
+                conn.execute("DELETE FROM mastery WHERE knowledge_point_id = ?", (kp_id,))
+                conn.execute("DELETE FROM knowledge_points WHERE id = ?", (kp_id,))
 
 
 def row_to_dict(row: sqlite3.Row | None) -> dict[str, Any] | None:

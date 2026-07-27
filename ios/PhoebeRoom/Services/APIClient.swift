@@ -3,13 +3,13 @@ import Foundation
 enum APIError: LocalizedError {
     case badURL
     case server(String)
-    case decoding
+    case decoding(String)
 
     var errorDescription: String? {
         switch self {
         case .badURL: return "接口地址无效"
         case .server(let msg): return msg
-        case .decoding: return "数据解析失败"
+        case .decoding(let detail): return "数据解析失败：\(detail)"
         }
     }
 }
@@ -44,7 +44,13 @@ final class APIClient {
         return try decoder.decode([KnowledgePoint].self, from: data)
     }
 
-    func startPractice(mode: PracticeMode, subject: Subject?, count: Int, familyCode: String) async throws -> StartPracticeResponse {
+    func startPractice(
+        mode: PracticeMode,
+        subject: Subject?,
+        count: Int,
+        familyCode: String,
+        knowledgePointIds: [String]? = nil
+    ) async throws -> StartPracticeResponse {
         var payload: [String: Any] = [
             "mode": mode.rawValue,
             "count": count,
@@ -52,6 +58,9 @@ final class APIClient {
         ]
         if let subject {
             payload["subject"] = subject.rawValue
+        }
+        if let knowledgePointIds, !knowledgePointIds.isEmpty {
+            payload["knowledge_point_ids"] = knowledgePointIds
         }
         return try await post("practice/start", json: payload, as: StartPracticeResponse.self)
     }
@@ -166,7 +175,7 @@ final class APIClient {
         do {
             return try decoder.decode(SpeakingSubmitResponse.self, from: data)
         } catch {
-            throw APIError.decoding
+            throw APIError.decoding(String(describing: error))
         }
     }
 
@@ -183,6 +192,48 @@ final class APIClient {
         )
     }
 
+    func fetchExtensionActivities(grade: Int, familyCode: String) async throws -> [ExtensionActivity] {
+        var components = URLComponents(url: baseURL.appendingPathComponent("extension/activities"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "family_code", value: familyCode),
+            URLQueryItem(name: "grade", value: String(grade)),
+        ]
+        guard let url = components.url else { throw APIError.badURL }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        try validate(response)
+        return try decoder.decode([ExtensionActivity].self, from: data)
+    }
+
+    func fetchSudokuLevel(grade: Int, level: Int, familyCode: String) async throws -> SudokuLevel {
+        var components = URLComponents(url: baseURL.appendingPathComponent("extension/sudoku/level"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "family_code", value: familyCode),
+            URLQueryItem(name: "grade", value: String(grade)),
+            URLQueryItem(name: "level", value: String(level)),
+        ]
+        guard let url = components.url else { throw APIError.badURL }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        try validate(response)
+        do {
+            return try decoder.decode(SudokuLevel.self, from: data)
+        } catch {
+            throw APIError.decoding(String(describing: error))
+        }
+    }
+
+    func clearSudoku(grade: Int, level: Int, board: [[Int]], familyCode: String) async throws -> SudokuClearResponse {
+        try await post(
+            "extension/sudoku/clear",
+            json: [
+                "family_code": familyCode,
+                "grade": grade,
+                "level": level,
+                "board": board,
+            ],
+            as: SudokuClearResponse.self
+        )
+    }
+
     private func post<T: Decodable>(_ path: String, json: [String: Any], as type: T.Type) async throws -> T {
         let url = baseURL.appendingPathComponent(path)
         var request = URLRequest(url: url)
@@ -194,7 +245,7 @@ final class APIClient {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
-            throw APIError.decoding
+            throw APIError.decoding(String(describing: error))
         }
     }
 

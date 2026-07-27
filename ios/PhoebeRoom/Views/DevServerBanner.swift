@@ -30,7 +30,11 @@ struct DevServerBanner: View {
             .font(.caption)
         }
         .padding(10)
-        .background(.ultraThinMaterial)
+        .background(RoomTheme.card.opacity(0.9))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(isOK ? RoomTheme.mint.opacity(0.5) : RoomTheme.softWarn.opacity(0.5), lineWidth: 1.5)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .task { await ping() }
         .sheet(isPresented: $showEditor) {

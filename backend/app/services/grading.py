@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import re
+from typing import Any
 
 
 def normalize_answer(value: str) -> str:
@@ -12,7 +14,28 @@ def normalize_answer(value: str) -> str:
     return text
 
 
-def grade_answer(expected: str, actual: str) -> bool:
+def _normalize_place_answer(value: str) -> str:
+    raw = value.strip()
+    if not raw:
+        return "{}"
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return normalize_answer(raw)
+    if not isinstance(data, dict):
+        return normalize_answer(raw)
+    cleaned = {str(k): str(v) for k, v in data.items() if v not in (None, "")}
+    return json.dumps(dict(sorted(cleaned.items())), ensure_ascii=False, separators=(",", ":"))
+
+
+def grade_answer(expected: str, actual: str, question_type: str | None = None) -> bool:
+    qtype = (question_type or "").strip()
+    if qtype == "drag_place":
+        return _normalize_place_answer(expected) == _normalize_place_answer(actual)
+    if qtype == "drag_sort":
+        return normalize_answer(expected) == normalize_answer(actual)
+    if qtype == "true_false":
+        return normalize_answer(expected) == normalize_answer(actual)
     return normalize_answer(expected) == normalize_answer(actual)
 
 

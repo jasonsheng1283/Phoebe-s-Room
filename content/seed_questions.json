@@ -2,7 +2,7 @@
   {
     "id": "q_math_add_01",
     "subject": "math",
-    "knowledge_point_id": "math.addition_within_100",
+    "knowledge_point_id": "math.g2u.add_2digit_no_carry",
     "type": "choice",
     "stem": "23 + 15 = ?",
     "options": ["28", "38", "48", "37"],
@@ -14,19 +14,19 @@
   {
     "id": "q_math_add_02",
     "subject": "math",
-    "knowledge_point_id": "math.addition_within_100",
-    "type": "fill",
-    "stem": "46 + 7 = ____",
-    "options": [],
-    "answer": "53",
-    "explanation": "6+7=13，写 3 进 1；4+1=5，所以是 53。加油，爸爸为你骄傲！",
+    "knowledge_point_id": "math.g2u.add_2digit_carry",
+    "type": "true_false",
+    "stem": "46 + 7 = 53。",
+    "options": ["对", "错"],
+    "answer": "对",
+    "explanation": "6+7=13，写 3 进 1；4+1=5，所以是 53。判断得很棒！",
     "difficulty": 1,
     "seed": true
   },
   {
     "id": "q_math_sub_01",
     "subject": "math",
-    "knowledge_point_id": "math.subtraction_within_100",
+    "knowledge_point_id": "math.g2u.sub_2digit_borrow",
     "type": "choice",
     "stem": "50 - 18 = ?",
     "options": ["32", "42", "28", "38"],
@@ -38,35 +38,35 @@
   {
     "id": "q_math_sub_02",
     "subject": "math",
-    "knowledge_point_id": "math.subtraction_within_100",
-    "type": "fill",
-    "stem": "72 - 9 = ____",
-    "options": [],
-    "answer": "63",
-    "explanation": "2 不够减 9，借 1 个十变成 12-9=3，十位 6，答案 63。",
+    "knowledge_point_id": "math.g2u.sub_2digit_borrow",
+    "type": "true_false",
+    "stem": "72 - 9 = 61。",
+    "options": ["对", "错"],
+    "answer": "错",
+    "explanation": "2 不够减 9，借 1 个十变成 12-9=3，十位 6，答案是 63，不是 61。仔细看就好！",
     "difficulty": 1,
     "seed": true
   },
   {
     "id": "q_math_wp_01",
     "subject": "math",
-    "knowledge_point_id": "math.word_problem_add_sub",
-    "type": "word_problem",
+    "knowledge_point_id": "math.g2u.word_add_sub",
+    "type": "choice",
     "stem": "小明有 24 支铅笔，又买了 13 支。现在一共有多少支？",
-    "options": [],
+    "options": ["11", "37", "27", "47"],
     "answer": "37",
-    "explanation": "这是求一共，用加法：24+13=37。列式想清楚，就很简单啦。",
+    "explanation": "求一共，用加法：24+13=37。列式想清楚，就很简单啦。",
     "difficulty": 2,
     "seed": true
   },
   {
     "id": "q_math_wp_02",
     "subject": "math",
-    "knowledge_point_id": "math.word_problem_add_sub",
-    "type": "word_problem",
-    "stem": "书架上有 45 本书，借走了 18 本。还剩多少本？",
-    "options": [],
-    "answer": "27",
+    "knowledge_point_id": "math.g2u.word_add_sub",
+    "type": "true_false",
+    "stem": "书架上有 45 本书，借走了 18 本。还剩 27 本。",
+    "options": ["对", "错"],
+    "answer": "对",
     "explanation": "求还剩多少，用减法：45-18=27。审题很重要哦。",
     "difficulty": 2,
     "seed": true
@@ -74,12 +74,198 @@
   {
     "id": "q_math_place_01",
     "subject": "math",
-    "knowledge_point_id": "math.place_value",
+    "knowledge_point_id": "math.g2l.num_within_1000_read",
     "type": "choice",
     "stem": "在 67 中，6 表示什么？",
     "options": ["6 个一", "6 个十", "6 个百", "67"],
     "answer": "6 个十",
     "explanation": "67 里，6 在十位，表示 6 个十。数位记牢就好。",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_sort_01",
+    "subject": "math",
+    "knowledge_point_id": "math.g2l.num_within_1000_compare",
+    "type": "drag_sort",
+    "stem": "把下面的数从小到大排一排。",
+    "options": [],
+    "interaction": {
+      "kind": "sort",
+      "items": [
+        {"id": "a", "label": "58"},
+        {"id": "b", "label": "85"},
+        {"id": "c", "label": "35"}
+      ]
+    },
+    "answer": "c,a,b",
+    "explanation": "先比十位：3 最小，然后 5，再 8。所以 35、58、85。拖得真整齐！",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_angle_01",
+    "subject": "math",
+    "knowledge_point_id": "math.g2u.angle_right",
+    "type": "drag_place",
+    "stem": "把「直角」标签拖到正确的角上。",
+    "options": [],
+    "interaction": {
+      "kind": "place",
+      "scene": "angles_three_v1",
+      "background_asset": "scene_angles_three_v1",
+      "tokens": [
+        {"id": "right", "label": "直角"}
+      ],
+      "slots": [
+        {"id": "s1", "label": "角1"},
+        {"id": "s2", "label": "角2"},
+        {"id": "s3", "label": "角3"}
+      ]
+    },
+    "answer": "{\"s2\":\"right\"}",
+    "explanation": "中间那个角像书本摊开的角，是直角（90°）。找得很准！",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_angle_02",
+    "subject": "math",
+    "knowledge_point_id": "math.g2u.angle_acute_obtuse",
+    "type": "true_false",
+    "stem": "比直角小的角叫做锐角。",
+    "options": ["对", "错"],
+    "answer": "对",
+    "image_asset": "img_math_angle_tf",
+    "diagram": {
+      "kind": "angles",
+      "angles_deg": [40, 90, 120],
+      "highlight_index": 0,
+      "labels": ["锐角", "直角", "钝角"]
+    },
+    "explanation": "比直角小是锐角，比直角大（又不到平角）是钝角。记牢啦！",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_angle_03",
+    "subject": "math",
+    "knowledge_point_id": "math.g2u.angle_right",
+    "type": "choice",
+    "stem": "图中哪个角是直角？",
+    "options": ["角 A", "角 B", "角 C", "角 A 和角 C"],
+    "answer": "角 B",
+    "diagram": {
+      "kind": "angles",
+      "angles_deg": [40, 90, 120],
+      "highlight_index": 1,
+      "labels": ["A", "B", "C"]
+    },
+    "explanation": "直角像书本摊开的角，正好 90°。图里角 B 就是直角。选对啦！",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_observe_01",
+    "subject": "math",
+    "knowledge_point_id": "math.g2u.observe_object",
+    "type": "drag_place",
+    "stem": "从正面看正方体，把「正方形」标签拖到正确位置。",
+    "options": [],
+    "interaction": {
+      "kind": "place",
+      "scene": "observe_cube_v1",
+      "background_asset": "scene_observe_cube_v1",
+      "tokens": [
+        {"id": "square", "label": "正方形"}
+      ],
+      "slots": [
+        {"id": "front", "label": "正面"},
+        {"id": "side", "label": "侧面"}
+      ]
+    },
+    "answer": "{\"front\":\"square\"}",
+    "explanation": "从正面看，正方体是一个正方形。侧面有时看起来像长方形哦。",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_observe_02",
+    "subject": "math",
+    "knowledge_point_id": "math.g2u.observe_object",
+    "type": "true_false",
+    "stem": "从正面看正方体，看到的是正方形。",
+    "options": ["对", "错"],
+    "answer": "对",
+    "diagram": {
+      "kind": "observe",
+      "object": "cube",
+      "view": "front",
+      "highlight_face": true
+    },
+    "explanation": "正面看正方体，就是一个正方形。观察方向要想清楚哦。",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_sym_01",
+    "subject": "math",
+    "knowledge_point_id": "math.g2l.symmetry",
+    "type": "drag_place",
+    "stem": "把「对称轴」标签拖到这条线上。",
+    "options": [],
+    "interaction": {
+      "kind": "place",
+      "scene": "symmetry_line_v1",
+      "background_asset": "scene_symmetry_line_v1",
+      "tokens": [
+        {"id": "axis", "label": "对称轴"}
+      ],
+      "slots": [
+        {"id": "mid", "label": "中间线"},
+        {"id": "edge", "label": "边上"}
+      ]
+    },
+    "answer": "{\"mid\":\"axis\"}",
+    "explanation": "对折后两边完全重合的那条线，就是对称轴。拖对啦！",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_sym_02",
+    "subject": "math",
+    "knowledge_point_id": "math.g2l.symmetry",
+    "type": "true_false",
+    "stem": "图中的竖线是这个图形的对称轴。",
+    "options": ["对", "错"],
+    "answer": "对",
+    "diagram": {
+      "kind": "symmetry",
+      "shape": "heart",
+      "axis": "vertical",
+      "show_axis": true
+    },
+    "explanation": "对折后两边能完全重合，中间那条竖线就是对称轴。判断得很棒！",
+    "difficulty": 1,
+    "seed": true
+  },
+  {
+    "id": "q_math_trans_01",
+    "subject": "math",
+    "knowledge_point_id": "math.g2l.translation",
+    "type": "drag_sort",
+    "stem": "把平移步骤按正确顺序排好。",
+    "options": [],
+    "interaction": {
+      "kind": "sort",
+      "items": [
+        {"id": "a", "label": "① 选定图形"},
+        {"id": "b", "label": "② 沿直线移动"},
+        {"id": "c", "label": "③ 形状大小不变"}
+      ]
+    },
+    "answer": "a,b,c",
+    "explanation": "平移时形状和大小都不变，只是位置沿着直线移动。顺序对啦！",
     "difficulty": 1,
     "seed": true
   },

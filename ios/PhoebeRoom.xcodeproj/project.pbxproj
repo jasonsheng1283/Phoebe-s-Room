@@ -10,6 +10,8 @@
 		1965B201047F43EF9D87755B /* PhoebeRoomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844A4E7727FA4F3D9006956D /* PhoebeRoomApp.swift */; };
 		2CED8DF36FBB44AEA58D476B /* HandwritingCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DAA630E49649CA8789212F /* HandwritingCanvas.swift */; };
 		9F9461FC23C149EC84B43DB9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E27C4153A47AA8907E9A6 /* Theme.swift */; };
+		B4C8E1A29F7D4C1A8E3B5D60 /* RoomUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D9F2B18E6C4B0A9D2E4F71 /* RoomUI.swift */; };
+		D4A1B2C3E4F506172839A0B1 /* DiagramViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1E2F3A4B506172839AABB /* DiagramViews.swift */; };
 		AC30F3E7490E4F498C213AC2 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DBD4D8DEAD48D694EC2DD4 /* AppState.swift */; };
 		EA1628E6732B4737A10C5509 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF24BD8EA28049BCB20A118C /* Models.swift */; };
 		EE8250FF753F4786B40F1A6A /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C4D04545964E688E3EB76B /* APIConfig.swift */; };
@@ -21,6 +23,7 @@
 		DBEEB6052AE74529BE0D091E /* PracticeSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D99A67E24F34E909AFB5E7D /* PracticeSessionView.swift */; };
 		4791B86ACE9D44C894722F27 /* SpeakingSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5684352085164931A8ED15DD /* SpeakingSessionView.swift */; };
 		2D6CC330147343BCB96603AF /* DevServerBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C158986F2ABD485B86B40E4E /* DevServerBanner.swift */; };
+		A1E7C9D4B2F84A6E9C0D1E2F /* ExtensionSudokuViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F8D0E5C3A94B7F8D1E2F30 /* ExtensionSudokuViews.swift */; };
 		C85E15BCC30F496BB53CE387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 513A85D319F843ED9F10F082 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +31,8 @@
 		844A4E7727FA4F3D9006956D /* PhoebeRoomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoebeRoomApp.swift; sourceTree = "<group>"; };
 		25DAA630E49649CA8789212F /* HandwritingCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandwritingCanvas.swift; sourceTree = "<group>"; };
 		3B3E27C4153A47AA8907E9A6 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A7D9F2B18E6C4B0A9D2E4F71 /* RoomUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomUI.swift; sourceTree = "<group>"; };
+		C0D1E2F3A4B506172839AABB /* DiagramViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagramViews.swift; sourceTree = "<group>"; };
 		D3DBD4D8DEAD48D694EC2DD4 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		EF24BD8EA28049BCB20A118C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		A8C4D04545964E688E3EB76B /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
@@ -39,6 +44,7 @@
 		2D99A67E24F34E909AFB5E7D /* PracticeSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionView.swift; sourceTree = "<group>"; };
 		5684352085164931A8ED15DD /* SpeakingSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakingSessionView.swift; sourceTree = "<group>"; };
 		C158986F2ABD485B86B40E4E /* DevServerBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevServerBanner.swift; sourceTree = "<group>"; };
+		B2F8D0E5C3A94B7F8D1E2F30 /* ExtensionSudokuViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSudokuViews.swift; sourceTree = "<group>"; };
 		513A85D319F843ED9F10F082 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1B3574D4D9EE4D6C97F403A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02D675BF7DBC44D9B8EF05CF /* PhoebeRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhoebeRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +105,8 @@
 			children = (
 				25DAA630E49649CA8789212F /* HandwritingCanvas.swift */,
 				3B3E27C4153A47AA8907E9A6 /* Theme.swift */,
+				A7D9F2B18E6C4B0A9D2E4F71 /* RoomUI.swift */,
+				C0D1E2F3A4B506172839AABB /* DiagramViews.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -129,6 +137,7 @@
 				F5B06733022E4B8184AFEB9E /* ParentAndKnowledgeViews.swift */,
 				2D99A67E24F34E909AFB5E7D /* PracticeSessionView.swift */,
 				5684352085164931A8ED15DD /* SpeakingSessionView.swift */,
+				B2F8D0E5C3A94B7F8D1E2F30 /* ExtensionSudokuViews.swift */,
 				C158986F2ABD485B86B40E4E /* DevServerBanner.swift */,
 			);
 			path = Views;
@@ -207,6 +216,8 @@
 				1965B201047F43EF9D87755B /* PhoebeRoomApp.swift in Sources */,
 				2CED8DF36FBB44AEA58D476B /* HandwritingCanvas.swift in Sources */,
 				9F9461FC23C149EC84B43DB9 /* Theme.swift in Sources */,
+				B4C8E1A29F7D4C1A8E3B5D60 /* RoomUI.swift in Sources */,
+				D4A1B2C3E4F506172839A0B1 /* DiagramViews.swift in Sources */,
 				AC30F3E7490E4F498C213AC2 /* AppState.swift in Sources */,
 				EA1628E6732B4737A10C5509 /* Models.swift in Sources */,
 				EE8250FF753F4786B40F1A6A /* APIConfig.swift in Sources */,
@@ -217,6 +228,7 @@
 				93B0EFB9324D4726B47296D7 /* ParentAndKnowledgeViews.swift in Sources */,
 				DBEEB6052AE74529BE0D091E /* PracticeSessionView.swift in Sources */,
 				4791B86ACE9D44C894722F27 /* SpeakingSessionView.swift in Sources */,
+				A1E7C9D4B2F84A6E9C0D1E2F /* ExtensionSudokuViews.swift in Sources */,
 				2D6CC330147343BCB96603AF /* DevServerBanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

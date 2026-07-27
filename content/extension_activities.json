@@ -1,0 +1,12 @@
+{
+  "activities": [
+    {
+      "id": "sudoku_symbols",
+      "title": "符号数独",
+      "subtitle": "过关挑战 · 形状会换装",
+      "kind": "sudoku",
+      "grades": [2],
+      "enabled": true
+    }
+  ]
+}

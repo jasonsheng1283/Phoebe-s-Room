@@ -36,6 +36,77 @@ def main() -> None:
         assert len(session["questions"]) == 3
         q = session["questions"][0]
 
+        r = client.post(
+            "/api/v1/practice/start",
+            json={
+                "mode": "review",
+                "subject": "math",
+                "count": 2,
+                "knowledge_point_ids": ["math.g2u.add_2digit_no_carry"],
+                "family_code": "phoebe-home",
+            },
+        )
+        assert r.status_code == 200, r.text
+        filtered = r.json()["questions"]
+        assert filtered
+        assert all(item["knowledge_point_id"] == "math.g2u.add_2digit_no_carry" for item in filtered)
+
+        r = client.post(
+            "/api/v1/practice/start",
+            json={
+                "mode": "review",
+                "subject": "math",
+                "count": 2,
+                "knowledge_point_ids": ["math.g2u.angle_right"],
+                "family_code": "phoebe-home",
+            },
+        )
+        assert r.status_code == 200, r.text
+        drag_session = r.json()
+        drag_q = next(q for q in drag_session["questions"] if q["type"] == "drag_place")
+        assert drag_q.get("interaction")
+        assert drag_q["interaction"].get("background_asset") == "scene_angles_three_v1"
+        r = client.post(
+            "/api/v1/practice/submit",
+            json={
+                "session_id": drag_session["session_id"],
+                "question_id": drag_q["id"],
+                "answer": '{"s2":"right"}',
+                "family_code": "phoebe-home",
+            },
+        )
+        assert r.status_code == 200, r.text
+        assert r.json()["is_correct"] is True
+
+        r = client.post(
+            "/api/v1/practice/start",
+            json={
+                "mode": "review",
+                "subject": "math",
+                "count": 1,
+                "knowledge_point_ids": ["math.g2u.angle_acute_obtuse"],
+                "family_code": "phoebe-home",
+            },
+        )
+        assert r.status_code == 200, r.text
+        diagram_q = r.json()["questions"][0]
+        assert diagram_q.get("diagram"), diagram_q
+        assert diagram_q["diagram"].get("kind") == "angles"
+
+        r = client.post(
+            "/api/v1/questions/generate-similar",
+            json={
+                "seed_question_id": "q_math_angle_02",
+                "family_code": "phoebe-home",
+                "use_llm": False,
+            },
+        )
+        assert r.status_code == 200, r.text
+        gen_diagram = r.json()
+        assert gen_diagram["accepted"] is True, gen_diagram
+        assert gen_diagram["question"].get("diagram", {}).get("kind") == "angles"
+        assert "描得最明显" in gen_diagram["question"]["stem"]
+
         detail = client.get(f"/api/v1/questions/{q['id']}", params={"reveal": True}).json()
         r = client.post(
             "/api/v1/practice/submit",
@@ -158,6 +229,38 @@ def main() -> None:
         summary = r.json()
         assert summary["speaking_attempts"] >= 1
         assert summary["speaking_seconds"] >= 180
+        assert "extension_sudoku_level" in summary
+
+        r = client.get(
+            "/api/v1/extension/activities",
+            params={"family_code": "phoebe-home", "grade": 2},
+        )
+        assert r.status_code == 200, r.text
+        acts = r.json()
+        assert any(a["id"] == "sudoku_symbols" for a in acts)
+
+        from app.services.sudoku import generate_sudoku_level
+
+        full = generate_sudoku_level(family_code="phoebe-home", grade=2, level=1)
+        r = client.get(
+            "/api/v1/extension/sudoku/level",
+            params={"family_code": "phoebe-home", "grade": 2, "level": 1},
+        )
+        assert r.status_code == 200, r.text
+        assert "solution" not in r.json()
+        assert r.json()["size"] == 4
+
+        r = client.post(
+            "/api/v1/extension/sudoku/clear",
+            json={
+                "family_code": "phoebe-home",
+                "grade": 2,
+                "level": 1,
+                "board": full["solution"],
+            },
+        )
+        assert r.status_code == 200, r.text
+        assert r.json()["highest_cleared_level"] >= 1
 
     print("ALL SMOKE TESTS PASSED")
 

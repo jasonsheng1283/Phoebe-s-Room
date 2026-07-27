@@ -9,6 +9,8 @@ from ..db import get_db, utc_now
 from ..schemas import (
     EndSessionRequest,
     EndSpeakingRequest,
+    ExtensionActivity,
+    ExtensionProgressItem,
     GenerateSimilarRequest,
     GenerateSimilarResponse,
     HealthResponse,
@@ -24,11 +26,20 @@ from ..schemas import (
     StartSpeakingResponse,
     SubmitAnswerRequest,
     SubmitAnswerResponse,
+    SudokuClearRequest,
+    SudokuClearResponse,
+    SudokuLevelResponse,
 )
 from ..services.grading import grade_answer
 from ..services.practice import list_knowledge_points, parent_summary, pick_questions, question_to_public, update_mastery
 from ..services.similar import generate_similar
 from ..services.speaking import evaluate_attempt, list_prompts, prompt_public
+from ..services.sudoku import (
+    boards_equal,
+    generate_sudoku_level,
+    load_activities,
+    public_level,
+)
 
 router = APIRouter()
 
@@ -55,7 +66,13 @@ def start_practice(body: StartPracticeRequest) -> StartPracticeResponse:
     _assert_family(body.family_code)
     session_id = f"sess_{uuid.uuid4().hex[:12]}"
     with get_db() as conn:
-        questions = pick_questions(conn, mode=body.mode, subject=body.subject, count=body.count)
+        questions = pick_questions(
+            conn,
+            mode=body.mode,
+            subject=body.subject,
+            count=body.count,
+            knowledge_point_ids=body.knowledge_point_ids,
+        )
         if not questions:
             raise HTTPException(status_code=404, detail="no_questions")
         conn.execute(
@@ -85,7 +102,7 @@ def submit_answer(body: SubmitAnswerRequest) -> SubmitAnswerResponse:
         q = conn.execute("SELECT * FROM questions WHERE id = ?", (body.question_id,)).fetchone()
         if q is None:
             raise HTTPException(status_code=404, detail="question_not_found")
-        is_correct = grade_answer(q["answer"], body.answer)
+        is_correct = grade_answer(q["answer"], body.answer, q["type"])
         now = utc_now()
         conn.execute(
             """
@@ -227,3 +244,99 @@ def end_speaking(body: EndSpeakingRequest) -> dict:
         if cur.rowcount == 0:
             raise HTTPException(status_code=404, detail="session_not_found")
     return {"ok": True}
+
+
+def _progress_level(conn, activity_id: str, grade: int) -> int:
+    row = conn.execute(
+        """
+        SELECT highest_cleared_level FROM extension_progress
+        WHERE activity_id = ? AND grade = ?
+        """,
+        (activity_id, grade),
+    ).fetchone()
+    return int(row["highest_cleared_level"]) if row else 0
+
+
+@router.get("/extension/activities", response_model=list[ExtensionActivity])
+def extension_activities(
+    family_code: str = Query(default="phoebe-home"),
+    grade: int = Query(default=2, ge=1, le=12),
+) -> list[ExtensionActivity]:
+    _assert_family(family_code)
+    activities = load_activities()
+    result: list[ExtensionActivity] = []
+    with get_db() as conn:
+        for act in activities:
+            if not act.get("enabled", True):
+                continue
+            grades = act.get("grades") or []
+            if grades and grade not in grades:
+                continue
+            cleared = _progress_level(conn, act["id"], grade)
+            result.append(
+                ExtensionActivity(
+                    id=act["id"],
+                    title=act["title"],
+                    subtitle=act.get("subtitle") or "",
+                    kind=act.get("kind") or "unknown",
+                    grades=list(grades),
+                    enabled=True,
+                    highest_cleared_level=cleared,
+                    next_level=cleared + 1,
+                )
+            )
+    return result
+
+
+@router.get("/extension/progress", response_model=list[ExtensionProgressItem])
+def extension_progress(family_code: str = Query(default="phoebe-home")) -> list[ExtensionProgressItem]:
+    _assert_family(family_code)
+    with get_db() as conn:
+        rows = conn.execute(
+            """
+            SELECT activity_id, grade, highest_cleared_level, updated_at
+            FROM extension_progress
+            ORDER BY activity_id, grade
+            """
+        ).fetchall()
+    return [ExtensionProgressItem(**dict(r)) for r in rows]
+
+
+@router.get("/extension/sudoku/level", response_model=SudokuLevelResponse)
+def sudoku_level(
+    family_code: str = Query(default="phoebe-home"),
+    grade: int = Query(default=2, ge=1, le=12),
+    level: int = Query(default=1, ge=1),
+) -> SudokuLevelResponse:
+    _assert_family(family_code)
+    with get_db() as conn:
+        cleared = _progress_level(conn, "sudoku_symbols", grade)
+    # Allow current next level and any already cleared (replay)
+    if level > cleared + 1:
+        raise HTTPException(status_code=403, detail="level_locked")
+    payload = public_level(generate_sudoku_level(family_code=family_code, grade=grade, level=level))
+    return SudokuLevelResponse(**payload)
+
+
+@router.post("/extension/sudoku/clear", response_model=SudokuClearResponse)
+def sudoku_clear(body: SudokuClearRequest) -> SudokuClearResponse:
+    _assert_family(body.family_code)
+    full = generate_sudoku_level(family_code=body.family_code, grade=body.grade, level=body.level)
+    if not boards_equal(body.board, full["solution"]):
+        raise HTTPException(status_code=400, detail="incorrect_solution")
+    with get_db() as conn:
+        cleared = _progress_level(conn, "sudoku_symbols", body.grade)
+        if body.level > cleared + 1:
+            raise HTTPException(status_code=403, detail="level_locked")
+        new_high = max(cleared, body.level)
+        conn.execute(
+            """
+            INSERT INTO extension_progress (activity_id, grade, highest_cleared_level, updated_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(activity_id, grade) DO UPDATE SET
+              highest_cleared_level=excluded.highest_cleared_level,
+              updated_at=excluded.updated_at
+            """,
+            ("sudoku_symbols", body.grade, new_high, utc_now()),
+        )
+    return SudokuClearResponse(ok=True, highest_cleared_level=new_high, next_level=new_high + 1)
